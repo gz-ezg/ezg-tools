@@ -1,7 +1,7 @@
 @charset "utf-8";
 /* 20180118 by fanbo */
 
-body{ background:#952f2a url(../images/goods_bj.jpg) no-repeat; background-size: 100%;}
+body{ background:#9c0a0d url(../images/goods_bj.jpg) no-repeat; background-size: 100%;}
 .copy_name{ color:#fff; font-weight: 700; text-align: center; padding:2.75rem 4.25rem 1.125rem;}
 .copy_name .pinyin{ font-size:.9375rem; line-height:1.1;}
 .copy_name .name{ font-size: 3.75rem; line-height: 1.1;}
