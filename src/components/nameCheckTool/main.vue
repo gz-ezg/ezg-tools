@@ -7,15 +7,18 @@
             <center>
                 <div class="content-border">
                     <!-- <canvas></canvas> -->
-                    <div style="width:90%;height:15vh"></div>
+                    <div style="width:90%;height:15vh">
+                        <h2>{{result.company_name}}</h2>
+                        <span v-html="result.pass_rate"></span>
+                    </div>
                 </div>
             </center>
             <center style="margin-top:10px!important;width:80%;margin:auto">
                 <img src="./static/inputcpname.png" style="width:50%;margin-top:10px!important">
-                <field label="选择城市：" style="margin-bottom:5px;border-radius:6px;margin-top:5px;"></field>
-                <field label="选择行业：" style="margin-bottom:5px;border-radius:6px"></field>
-                <field label="意向名称：" style="margin-bottom:5px;border-radius:6px"></field>
-                <Button type="danger" size="large"> 立刻提交</Button>
+                <field label="选择城市：" style="margin-bottom:5px;border-radius:6px;margin-top:5px;" v-model="city"></field>
+                <field label="选择行业：" style="margin-bottom:5px;border-radius:6px" v-model="company_name"></field>
+                <field label="意向名称：" style="margin-bottom:5px;border-radius:6px" v-model="company_line"></field>
+                <Button type="danger" size="large" @click="submit"> 立刻提交</Button>
 
                 <img src="./static/resultList.png" style="width:25%;margin-top:10px">
             </center>
@@ -33,6 +36,30 @@ export default {
     },
     data(){
         return{
+            city: "",
+            company_name: "",
+            company_line: "",
+            result: ""
+        }
+    },
+    methods:{
+        submit(){
+            let _self = this
+            let url = `api/store/tools/company/name/verification`
+            let config = {
+                params: {
+                    city: _self.city,
+                    company_name: _self.company_name,
+                    company_line: _self.company_line
+                }
+            }
+
+            function success(res){
+                // eslint-disable-next-line
+                _self.result = res.data.data
+            }
+
+            this.$Get(url, config, success)
 
         }
     }
