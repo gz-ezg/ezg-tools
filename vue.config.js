@@ -1,3 +1,6 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require('path')
+
 module.exports = {
     devServer: {
         proxy: {
@@ -10,5 +13,17 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    // configureWebpack: {
+    //     plugins: [
+    //         new CopyWebpackPlugin([
+    //             {
+    //               from: path.resolve(__dirname, '../public/static'),
+    //               to: "/",
+    //               ignore: ['.*']
+    //             }
+    //         ])
+    //     ]
+    // }
+
 }

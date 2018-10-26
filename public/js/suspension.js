@@ -1,0 +1,21 @@
+var str = '<style>.btn_top {position: fixed; z-index: 10000; right: .857142rem; bottom: 3.571428rem; }.btn_top .hd {border-radius: 50%; width: 2.7142857rem; height: 2.7142857rem; background: rgba(255, 0, 0, 0.6); font-size: .857142rem; color: #fff; line-height: 1.1; display: box; display: -webkit-box; box-align: center; -webkit-box-align: center; box-pack: justify; -webkit-box-pack: justify; }.btn_top .hd i {display: block; width: 100%; text-align: center; font-weight: 700;}.btn_top .bd {width: 80%; font-weight: 400; font-size: 1.1428571rem; background: #fff; padding: 0; border-radius: .85714285rem; position: fixed; top: 50%; left: 10%; right: 10%; white-space: nowrap; box-shadow: 0.1rem 0.1rem 0.4rem rgba(102,102,102,.6); z-index: 3; visibility: hidden; opacity: 0; -webkit-transform: translateY(-50%) scale(1.1); -moz-transform: translateY(-50%) scale(1.1); transform: translateY(-50%) scale(1.1); transform: translateY(-50%) scale(1.1); -webkit-transition: all .3s; -moz-transition: all .3s; transition: all .3s;}.btn_top .bd a {display: block; color: #0894ec; }.btn_top .bd_h {height: 3.1428571rem; line-height: 3.1428571rem; text-align: center; font-weight: 700; }.btn_top .bd_c {padding: 1.1428571rem; padding-top: 0; }.btn_top .bd_c p span{display: block;font-size: .8571428rem;color: #999;}.btn_top .bd_c li small {font-size: 80%; color: #999; }.btn_top .bd_c li.item {display: -webkit-box; position: relative; padding: .57142857rem; box-sizing: border-box; border-bottom: 1px solid rgba(0,0,0,.1); }.btn_top .bd_c li.item span {display: block; margin-right: .57142857rem; }.btn_top .bd_c li.item span i {width: 1.142857rem; height: 1.142857rem; display: inline-block; vertical-align: top; margin: .2142857rem; margin-bottom: 0; background: url(https://images.yw11.com/common/images/suspension-m-bg.png); background-size: cover;}.btn_top .bd_c li.item span i.tel{ background-position: center 0;}.btn_top .bd_c li.item span i.qq{ background-position: center center;}.btn_top .bd_c li.item span i.wx{ background-position: center bottom;}.btn_top .bd_c li.item strong {color: #090; display: inline-block; padding: 0 5px; background: #eee; }.btn_top .bd_b {height: 3.1428571rem; line-height: 3.1428571rem; }.btn_top .bd_b a {display: block; -webkit-box-flex: 1; text-align: center; background: rgba(200,200,200,.1); border-top: 1px solid rgba(0,0,0,.1); }.btn_top_bj{position: fixed; top: 0; bottom: 0; left: 0; right: 0;background:#000; opacity: 0;z-index: 2; visibility: hidden; -webkit-transition: all .3s; -moz-transition: all .3s; transition: all .3s;}.btn_top.show .btn_top_bj{ visibility: visible; opacity: .3; }.btn_top.show .bd{ visibility: visible; opacity: 1; -webkit-transform: translateY(-50%) scale(1); -moz-transform: translateY(-50%) scale(1); transform: translateY(-50%) scale(1);}</style><div class="btn_top"><div class="btn_top_bj"></div><div class="hd"><i>在线<br>咨询</i></div><div class="bd"><div class="bd_h">在线咨询</div><div class="bd_c"><p>起名网在线客服联系方式：<span>（工作日 9:00-18:00）</span></p><ul><li class="item"><span><i class="tel"></i>电话客服</span><a href="tel:0731-89888777">0731-89888777</a></li><li class="item" style="border: 0;padding-bottom: 0;"><span><i class="tel"></i>电话手机</span><a href="tel:17788989407">17788989407</a></li><li class="item"><span style="color: #fff;"><i class="tel" style="background: none;"></i>电话客服</span><a href="tel:18163728777">18163728777</a></li><li class="item"><span><i class="qq"></i>QQ客服</span><a href="mqqwpa://im/chat?chat_type=wpa&uin=11325304&version=1&src_type=web&web_src=qq">11325304 <small>点击交谈</small></a></li><li class="item"><span><i class="wx"></i>微信公众号</span><strong>bazimingzi</strong></li><li><small>微信需要长按复制</small></li></ul></div><div class="bd_b"><a href="javascript:;" class="close">关闭</a></div></div></div>';
+//加载字符串
+
+$(function(){
+    $("body").append(str);
+    
+    // 效果
+    var btn_top=$('.btn_top')
+    btn_top.find('.hd').click(function(e){
+        if($(this).parent().hasClass('show')){
+            $(this).parent().removeClass('show')
+        }else{
+            $(this).parent().addClass('show')
+        }
+    }).prev().click(function(){
+        $(this).parent().removeClass('show')
+    })
+    btn_top.find('.bd_b a.close').click(function(){
+        btn_top.removeClass('show')
+    })
+})

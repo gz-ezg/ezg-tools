@@ -8,9 +8,7 @@ Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 Vue.prototype.$Get = function(url, config, success, fail=function(err){console.log(err);_self.$Message.error(err)}){
-  let _self = this
   this.$http.get(url,config).then(function(res){
-      // _self.$backToLogin(res)
       if(res.data.msgCode == "40000"){
           success(res)
       }else{
@@ -19,30 +17,28 @@ Vue.prototype.$Get = function(url, config, success, fail=function(err){console.l
           }else{
               console.error(res)
           }
+          fail(res)
       }
   }).catch(function(err){
-      // _self.$Message.error('数据异常！')
+      fail(err)
       console.error(err)
   })
 }
 
 Vue.prototype.$Post = function(url, config, success, fail){
-  let _self = this
   this.$http.post(url,config).then(function(res){
-      // _self.$backToLogin(res)
       if(res.data.msgCode == "40000"){
           if(res.data.msg){
             Toast.success(res.data.msg)
           }
           success(res)
       }else{
-          Toast.fail(res.data.msg)
           fail(res)
           console.warn(res)
       }
   }).catch(function(err){
       fail(err)
-      Toast.fail(err)
+    //   Toast.fail(err)
       console.error(err)
   })
 }
