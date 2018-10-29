@@ -4,10 +4,13 @@ import Router from 'vue-router'
 import Index from '../components/HelloWorld.vue'
 
 // 企业名称测算 
-import NameCheckTool from '../components/nameCheckTool'
+import nameCheckTool from '../components/nameCheckTool'
 
 // 企业名称核验
 import nameTestTool from '../components/nameTestTool'
+
+// 方案工具
+import projectTool from '../components/projectTool'
 
 Vue.use(Router)
 
@@ -32,16 +35,25 @@ export default new Router({
         },
         {
             path: "/namechecktool",
-            name: 'NameCheckTool',
-            component: NameCheckTool,
+            name: 'nameCheckTool',
+            component: nameCheckTool,
             meta: {
                 title: "企业名称测算"
             }
         },
         {
+            path: "/project/:id",
+            name: "projectTool",
+            component: projectTool,
+            meta: {
+                title: "方案工具"
+            }
+            
+        },
+        {
             path: '/',
             redirect: {
-                name: "NameCheckTool"
+                name: "nameCheckTool"
             }
         }
     ]
