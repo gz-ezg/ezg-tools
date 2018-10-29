@@ -11,6 +11,8 @@ import nameTestTool from '../components/nameTestTool'
 
 // 方案工具
 import projectTool from '../components/projectTool'
+import projectReport from '../components/projectTool/report'
+
 
 Vue.use(Router)
 
@@ -48,7 +50,14 @@ export default new Router({
             meta: {
                 title: "方案工具"
             }
-            
+        },
+        {
+            path: "/report",
+            name: "projectReport",
+            component: projectReport,
+            meta: {
+                title: "方案工具"
+            }
         },
         {
             path: '/',
