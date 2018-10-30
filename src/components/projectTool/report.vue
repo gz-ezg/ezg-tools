@@ -9,16 +9,17 @@
     </div>
 </template>
 <script>
-import {Loading } from 'vant';
+import {Loading, Toast } from 'vant';
 export default {
     components:{
-        Loading
+        Loading,
+        Toast
     },
     data(){
         return {
             loading:true,
             detail: {
-                
+
             },
             rongyuHtml: "",
             shenbaoHtml: "",
@@ -55,12 +56,29 @@ export default {
 
             function success(res){
                 _self.detail = res.data.data
+                // if(!_self.detail.companyMsg.length){
+                //     Toast.fail("对不起，您输入的公司名称无法找到相关信息！未能生成方案！")
+                //     setTimeout(_self.$router.back(),1500)
+                //     return ;
+                // }
+                if(_self.detail.companyMsg){
+                    _self.detail.companyMsg.push({
+                        companyname: "无",
+                        capitalctbdb: "无",
+                        companycreateDate: "无",
+                        registerOffice: "无",
+                    })
+                }
                 _self.rongyu_text2html()
                 _self.shenbao_text2html()
                 _self.generate_report()
             }
 
-            this.$Get(url, config, success)
+            function fail(err){
+                
+            }
+
+            this.$Get(url, config, success, fail)
         },
         generate_report(){
             let temp = `<!DOCTYPE html>
@@ -68,7 +86,7 @@ export default {
                 <head>
                 </head>
                 <body>
-                    <h3 style="text-align: center;"><strong>${this.detail.companyMsg[0].companyname}项目规划</strong></h3>
+                    <h3 style="text-align: center;"><strong>${this.companyname}项目规划</strong></h3>
                     <p><strong>&nbsp;</strong></p>
                     <h3><strong>一、企业情况</strong></h3>
                     <p style="text-align: center;">公司主营业务：</p>
@@ -242,7 +260,7 @@ export default {
                                     <p>${this.detail.shenBao[i].concessions}</p>
                                 </td>
                                 <td style="text-align: center;border-width: 1px; border-style: solid;" width="136">
-                                    <p>${this.detail.shenBao[i].declaredate.slice(0,10)}</p>
+                                    <p>${this.detail.shenBao[i].declaredate}</p>
                                 </td>
                             </tr>`
                 template_array.push(temp)

@@ -1,9 +1,10 @@
 <template>
     <div>
-        <div style="height:96vh;overflow-y:hidden" class="main" v-if="success">
-            <div style="margin-top:20vh">
-                <div style="margin-top:10px!important;width:80%;margin:auto">
-                    <img src="./static/inputcpname.png" style="width:70%;margin-top:10px!important;margin-left:15%">
+        <div style="height:100vh;overflow-y:hidden"  v-if="success">
+            <img src="./static/header.png" style="width:100%;height:35vh;">
+            <div style="margin-top:-1vh" class="main">
+                <div style="width:80%;margin:auto">
+                    <img src="./static/title.png" style="width:70%;margin-top:2vh;margin-left:15%">
                     <field label="城市：" label-align="left" style="margin-bottom:10px;border-radius:6px;margin-top:15px;padding-left:10px" v-model="city"></field>
                     <field label="行业：" label-align="left" style="margin-bottom:10px;border-radius:6px;padding-left:10px" v-model="company_line"></field>
                     <field label="意向名称：" label-align="left" style="margin-bottom:10px;border-radius:6px;padding-left:10px" v-model="company_name"></field>
@@ -165,13 +166,18 @@ export default {
     content: none;
 }
 .main{
+    height: 62vh;
     background-image: url('static/main2.png');
     background-size: 100%;
-    border:3vw solid #f64a42;
-    border-top:2vh solid #f64a42;
-    border-bottom:2vh solid #f64a42
+    border:3vw solid #131b2d;
+    border-top:2vh solid #131b2d;
+    border-bottom:2vh solid #131b2d
 }
 .van-nav-bar{
     background-color: #f64a42;
+}
+.van-button--large{
+    line-height: 36px;
+    height: 36px;
 }
 </style>

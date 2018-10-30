@@ -8,7 +8,7 @@ Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 
-Vue.prototype.$Get = function(url, config, success, fail=function(err){console.log(err);_self.$Message.error(err)}){
+Vue.prototype.$Get = function(url, config, success, fail=function(err){console.log(err);Toast.fail(err)}){
   this.$http.get(url,config).then(function(res){
       if(res.data.msgCode == "40000"){
           success(res)

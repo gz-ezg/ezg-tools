@@ -7,8 +7,8 @@
                 <div class="content-border">
                     <div style="width:90%;height:12vh">
                         <div v-if="loading">  
-                            <h3 style="font-size:14px;color:white;padding-top:10px">{{result.company_name | html2text}}</h3>
-                            <div v-html="result.pass_rate" style="font-size:14px;margin-top:2px;color:white"></div>
+                            <h3 style="font-size:14px;color:white;padding-top:15px">{{result.company_name | html2text}}</h3>
+                            <div v-html="result.pass_rate" style="font-size:14px;margin-top:5px;color:white"></div>
                         </div>
                         <div style="height:12vh" v-else>
                             <loading type="spinner" color="white" style="padding-top:3vh"></loading>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { Button, Field, Loading  } from 'vant';
+import { Button, Field, Loading, Toast } from 'vant';
 
 export default {
     components:{
@@ -68,6 +68,7 @@ export default {
             time: 0,
             mobile: "",
             yzm: "",
+            companynameShow: ""
         }
     },
     computed:{
@@ -84,7 +85,7 @@ export default {
             let _self = this
             let reg = /^[1][0-9]{10}$/
             if(!reg.test(_self.mobile)){
-                _self.$toast.fail("请输入正确的手机号！")
+                Toast.fail("请输入正确的手机号！")
                 return false
             }else{
                 return true
@@ -145,16 +146,20 @@ export default {
 
             function success(res){
                 _self.result = res.data.data
+                _self.companynameShow = true
                 setInterval(()=>{
                     _self.loading = true
                 },1000)
             }
 
             function fail(err){
+                // <h1 style="font-size:12px;color:white">T T</h1>
+                _self.result.company_name = "T T"
                 _self.result.pass_rate = `
-                    <h1 style="font-size:18px;color:white">T T</h1>
+                    
                     <span>结果不小心跑丢了！</span>
                 `
+                _self.companynameShow = false
                 _self.result.company_name = ""
                 // Toast.fail("获取失败，请重试！")
                 setInterval(()=>{
