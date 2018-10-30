@@ -1,6 +1,6 @@
 <template>
     <div style="background-color:#07BAE5;height:100vh;overflow-y:hidden">
-        <img src="./static/project.jpg" style="width:100%;margin-top:-20px">
+        <img src="./static/project.jpg" style="width:100%;height:70vh;margin-top:-15vh">
         <div class="main" style="margin-top:-15px">
             <div style="margin-top:10px!important;width:80%;margin:auto">
                 <field style="margin-bottom:5px;border-radius:6px;margin-top:5px;padding-left:10px;" :value="companyname" @input="update_companyname" placeholder="公司名称"></field>

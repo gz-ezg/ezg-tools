@@ -10,7 +10,6 @@
                     <field
                         v-model="mobile"
                         label="手机号："
-                        placeholder="请输入手机号"
                         style="margin-bottom:10px;border-radius:6px;padding-left:10px;"
                     />
                     <field
@@ -18,7 +17,6 @@
                         type="number"
                         label="验证码："
                         label-align="left"
-                        placeholder="请输入验证码"
                         style="margin-bottom:10px;border-radius:6px;padding-left:10px;padding-right:10px"
                         >
                         <Button slot="button" size="small" type="primary" @click="require_code" v-if="!yzmDisable" >获取验证码</Button>

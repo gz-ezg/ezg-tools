@@ -32,7 +32,7 @@ export default new Router({
             name: 'nameTestTool',
             component: nameTestTool,
             meta: {
-                title: "企业名称通过率测试"
+                title: "企业名称解析"
             }
         },
         {
@@ -62,7 +62,7 @@ export default new Router({
         {
             path: '/',
             redirect: {
-                name: "nameCheckTool"
+                name: "nameTestTool"
             }
         }
     ]

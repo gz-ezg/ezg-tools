@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        companyname: "则为",
+        companyname:"",
         name: "",
         tel: "",
         userid: ""
