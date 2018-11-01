@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Index from '../components/HelloWorld.vue'
-
 // 企业名称测算 
 import nameCheckTool from '../components/nameCheckTool'
 
@@ -13,20 +11,22 @@ import nameTestTool from '../components/nameTestTool'
 import projectTool from '../components/projectTool'
 import projectReport from '../components/projectTool/report'
 
-
+// 个税计算
+import taxAccount from '../components/taxAccount'
+import taxResult from '../components/taxAccount/result.vue'
 Vue.use(Router)
 
 
 export default new Router({
     routes: [
-        {
-            path:'/index',
-            name: 'index',
-            component: Index,
-            meta: {
-                title: "e账柜"
-            }
-        },
+        // {
+        //     path:'/index',
+        //     name: 'index',
+        //     component: Index,
+        //     meta: {
+        //         title: "e账柜"
+        //     }
+        // },
         {
             path: "/nametesttool",
             name: 'nameTestTool',
@@ -60,9 +60,25 @@ export default new Router({
             }
         },
         {
+            path: "/taxaccount",
+            name: "taxAccount",
+            component: taxAccount,
+            meta: {
+                title: "个税计算"
+            }
+        },
+        {
+            path: "/taxResult",
+            name: "taxResult",
+            component: taxResult,
+            meta: {
+                title: "计算结果"
+            }
+        },
+        {
             path: '/',
             redirect: {
-                name: "nameTestTool"
+                name: "taxResult"
             }
         }
     ]

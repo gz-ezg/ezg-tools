@@ -18,7 +18,7 @@ Vue.prototype.$Get = function(url, config, success, fail=function(err){console.l
           }else{
               console.error(res)
           }
-          fail(res)
+          fail(res.data.msg)
       }
   }).catch(function(err){
       fail(err)
