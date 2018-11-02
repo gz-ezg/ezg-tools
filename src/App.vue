@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import { Tabbar, TabbarItem } from 'vant';
+// import { Tabbar, TabbarItem } from 'vant';
 
 export default {
   name: 'app',
   components: {
-    vanTabbar: Tabbar,
-    vanTabbarItem: TabbarItem,
+    // vanTabbar: Tabbar,
+    // vanTabbarItem: TabbarItem,
   },
   data(){
     return {
