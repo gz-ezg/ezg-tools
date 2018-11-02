@@ -70,7 +70,7 @@ export default new Router({
         {
             path: '/',
             redirect: {
-                name: "taxResult"
+                name: "taxAccount"
             }
         }
     ]

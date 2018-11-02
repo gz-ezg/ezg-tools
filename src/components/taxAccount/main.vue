@@ -1,139 +1,164 @@
 <template>
-    <div style="background-color:#f64a42;height:1070px;">
+    <div style="background-color:#f64a42;height:1110px;">
         <panel title="个税计算" id="panel-title">
             <field label="月收入" placeholder="请输入当前收入" input-align="right" v-model="monthIncome"></field>
             <field label="起征点" readonly error value="5000" input-align="right"></field>
             <field label="五险一金" placeholder="请输入您每月实缴五险一金" input-align="right" v-model="insurance"></field>
         </panel>
-        <panel title="抵扣项" id="panel-content">
-            <cell-group class="input-field">
-                <cell title="子女教育 1000/人/月" @click="open_child_detail(children)">
-                    <div slot="icon">
-                        <icon name="info-o" />
-                    </div>
-                </cell>
-                <cell title="抵扣方式" class="small">
-                    <radio-group v-model="childrenUseNum">
+        <Row v-if="isResult">
+            <panel title="抵扣项" id="panel-content">
+                <cell-group class="input-field">
+                    <cell title="子女教育 1000/人/月" @click="open_child_detail(children)">
+                        <div slot="icon">
+                            <icon name="info-o" />
+                        </div>
+                    </cell>
+                    <cell title="抵扣方式" class="small">
+                        <!-- <radio-group v-model="childrenUseNum">
+                            <row type="flex" justify="end">
+                                <Col span="12">
+                                    <radio name="1">共同使用</radio>
+                                </Col>
+                                <Col span="12">
+                                    <radio name="2">单独使用</radio>
+                                </Col>
+                            </row>
+                        </radio-group> -->
                         <row type="flex" justify="end">
-                            <Col span="12">
-                                <radio name="1">共同使用</radio>
-                            </Col>
-                            <Col span="12">
-                                <radio name="2">单独使用</radio>
-                            </Col>
+                            <Col span="10"><Button round size="small" @click="childrenUseNum = 1" :type="{ primary: childrenUseNum == 1, default:childrenUseNum != 1}">共同使用</Button></Col>
+                            <Col span="10"><Button round size="small" @click="childrenUseNum = 2" :type="{ primary: childrenUseNum == 2, default:childrenUseNum != 2}">单独使用</Button></Col>
                         </row>
-                    </radio-group>
-                </cell>
-                <cell title="子女数" class="small">
-                    <radio-group v-model="childrenNum">
-                        <row type="flex" justify="end">
-                            <Col span="8">
-                                <radio name="1">1</radio>
-                            </Col>
-                            <Col span="8">
-                                <radio name="2">2</radio>
-                            </Col>
-                            <Col span="8"  class="not-padding">
-                                <field placeholder="自定义" input-align="center" v-model="childrenNum"></field>
-                            </Col>
-                        </row>
-                    </radio-group>
-                </cell>
-            </cell-group>
-            <cell-group class="input-field">
-                <cell title="继续教育" @click="open_child_detail(edu)">
-                    <div slot="icon">
-                        <icon name="info-o" />
-                    </div>
-                </cell>
-                <cell title="抵扣方式" class="small">
-                    <radio-group v-model="adultEducation">
-                        <row type="flex" justify="end">
-                            <Col span="12">
-                                <radio name="4800">学历：4800</radio>
-                            </Col>
-                            <Col span="12">
-                                <radio name="3600">技术：3600</radio>
-                            </Col>
-                        </row>
-                    </radio-group>
-                </cell>
-            </cell-group>
-            <cell-group class="input-field">
-                <cell title="赡养老人 2000/月" @click="open_child_detail(elder)">
-                    <div slot="icon">
-                        <icon name="info-o" />
-                    </div>
-                </cell>
-                <cell title="兄妹数" class="small">
-                    <radio-group v-model="brotherNum">
-                        <row type="flex" justify="end">
-                            <Col span="8">
-                                <radio name="1">1</radio>
-                            </Col>
-                            <Col span="8">
-                                <radio name="2">2</radio>
-                            </Col>
-                            <Col span="8"  class="not-padding">
-                                <field placeholder="自定义" input-align="center" v-model="brotherNum"></field>
-                            </Col>
-                        </row>
-                    </radio-group>
-                </cell>
-            </cell-group>
-            <cell-group class="input-field">
-                <cell title="住房支出" @click="open_child_detail(house)">
-                    <div slot="icon">
-                        <icon name="info-o" />
-                    </div>
-                </cell>
-                <cell title="首套房贷利息" class="small">
-                    <radio-group v-model="housing">
-                        <row type="flex" justify="end">
-                            <Col span="8">
-                                <radio name="1001">1000/月</radio>
-                            </Col>
-                        </row>
-                    </radio-group>
-                </cell>
-                <cell title="租房扣除" class="small">
-                    <radio-group v-model="housing">
-                        <row type="flex" justify="end">
-                            <Col span="8">
-                                <radio name="1200">1200/月</radio>
-                            </Col>
-                            <Col span="8">
-                                <radio name="1000">1000/月</radio>
-                            </Col>
-                            <Col span="8">
-                                <radio name="800">800/月</radio>
-                            </Col>
-                        </row>
-                    </radio-group>
-                </cell>
-            </cell-group>
-            <cell-group class="input-field">
-                <cell title="大病医疗支出" @click="open_child_detail(illness)">
-                    <div slot="icon">
-                        <icon name="info-o" />
-                    </div>
-                </cell>
-                <field label="医疗费用" placeholder="请输入" input-align="right" v-model="medicalExpenses"></field>
-            </cell-group>
-        </panel>
-        <Row style="margin-top:20px;margin-left:20px">
-            <Col><span style="color:#fff;font-size:12px;">*说明：计算结果仅供参考；由 e账柜 提供；</span></Col>
-        </Row>
+                        
+                    </cell>
+                    <cell title="子女数" class="small">
+                        <radio-group v-model="childrenNum">
+                            <row type="flex" justify="end">
+                                <Col span="8">
+                                    <Button round size="small" @click="childrenNum = 1" :type="{ primary: childrenNum == 1, default:childrenNum != 1}">1</Button>
+                                    <!-- <radio name="1">1</radio> -->
+                                </Col>
+                                <Col span="8">
+                                    <Button round size="small" @click="childrenNum = 2" :type="{ primary: childrenNum == 2, default:childrenNum != 2}">2</Button>
+                                    <!-- <radio name="2">2</radio> -->
+                                </Col>
+                                <Col span="8"  class="not-padding">
+                                    <field placeholder="自定义" input-align="center" v-model="childrenNum"></field>
+                                </Col>
+                            </row>
+                        </radio-group>
+                    </cell>
+                </cell-group>
+                <cell-group class="input-field">
+                    <cell title="继续教育" @click="open_child_detail(edu)">
+                        <div slot="icon">
+                            <icon name="info-o" />
+                        </div>
+                    </cell>
+                    <cell title="抵扣方式" class="small">
+                        <radio-group v-model="adultEducation">
+                            <row type="flex" justify="end">
+                                <Col span="10">
+                                    <Button round size="small" @click="adultEducation = 4800" :type="{ primary: adultEducation == 4800, default:adultEducation != 4800}">学历：4800</Button>
+                                    <!-- <radio name="4800">学历：4800</radio> -->
+                                </Col>
+                                <Col span="10">
+                                    <Button round size="small" @click="adultEducation = 3600" :type="{ primary: adultEducation == 3600, default:adultEducation != 3600}">技术：3600</Button>
+                                    <!-- <radio name="3600">技术：3600</radio> -->
+                                </Col>
+                            </row>
+                        </radio-group>
+                    </cell>
+                </cell-group>
+                <cell-group class="input-field">
+                    <cell title="赡养老人 2000/月" @click="open_child_detail(elder)">
+                        <div slot="icon">
+                            <icon name="info-o" />
+                        </div>
+                    </cell>
+                    <cell title="兄妹数" class="small">
+                        <radio-group v-model="brotherNum">
+                            <row type="flex" justify="end">
+                                <Col span="8">
+                                    <Button round size="small" @click="brotherNum = 1" :type="{ primary: brotherNum == 1, default:brotherNum != 1}">1</Button>
+                                    <!-- <radio name="1">1</radio> -->
+                                </Col>
+                                <Col span="8">
+                                    <Button round size="small" @click="brotherNum = 2" :type="{ primary: brotherNum == 2, default:brotherNum != 2}">2</Button>
+                                    <!-- <radio name="2">2</radio> -->
+                                </Col>
+                                <Col span="8"  class="not-padding">
+                                    <field placeholder="自定义" input-align="center" v-model="brotherNum"></field>
+                                </Col>
+                            </row>
+                        </radio-group>
+                    </cell>
+                </cell-group>
+                <cell-group class="input-field">
+                    <cell title="住房支出" @click="open_child_detail(house)">
+                        <div slot="icon">
+                            <icon name="info-o" />
+                        </div>
+                    </cell>
+                    <cell title="首套房贷利息" class="small">
+                        <radio-group v-model="housing">
+                            <row type="flex" justify="end">
+                                <Col span="8">
+                                    <Button round size="small" @click="housing = 1001" :type="{ primary: housing == 1001, default:housing != 1001}">1000/月</Button>
+                                <!-- <radio name="1001">1000/月</radio> -->
+                                </Col>
+                            </row>
+                        </radio-group>
+                    </cell>
+                    <cell title="租房扣除" class="small">
+                        <radio-group v-model="housing">
+                            <row type="flex" justify="end">
+                                <Col span="8">
+                                    <Button round size="small" @click="housing = 1200" :type="{ primary: housing == 1200, default:housing != 1200}">1200/月</Button>
 
-        <Row style="width:90%;margin:auto;margin-top:20px">
-            <Button size="large" type="primary" @click="computer_tax" :disabled="disabled">计算</Button>
-            <Button size="large" style="margin-top:10px" @click="reset">重置</Button>
+                                    <!-- <radio name="1200">1200/月</radio> -->
+                                </Col>
+                                <Col span="8">
+                                    <Button round size="small" @click="housing = 1000" :type="{ primary: housing == 1000, default:housing != 1000}">1000/月</Button>
+
+                                    <!-- <radio name="1000">1000/月</radio> -->
+                                </Col>
+                                <Col span="8">
+                                    <Button round size="small" @click="housing = 800" :type="{ primary: housing == 800, default:housing != 800}">800/月</Button>
+
+                                    <!-- <radio name="800">800/月</radio> -->
+                                </Col>
+                            </row>
+                        </radio-group>
+                    </cell>
+                </cell-group>
+                <cell-group class="input-field">
+                    <cell title="大病医疗支出" @click="open_child_detail(illness)">
+                        <div slot="icon">
+                            <icon name="info-o" />
+                        </div>
+                    </cell>
+                    <field label="医疗费用" placeholder="请输入" input-align="right" v-model="medicalExpenses"></field>
+                </cell-group>
+            </panel>
+            <Row style="margin-top:20px;margin-left:20px">
+                <Col><span style="color:#fff;font-size:12px;">*说明：计算结果仅供参考；由 e账柜 提供；</span></Col>
+            </Row>
+
+            <Row style="width:90%;margin:auto;margin-top:20px">
+                <Button size="large" type="primary" @click="computer_tax" :disabled="disabled">计算</Button>
+                <Button size="large" style="margin-top:10px" @click="reset">重置</Button>
+            </Row>
+        </Row>
+        <Row v-else>
+                个税结果
+            <result></result>
         </Row>
     </div>
 </template>
 
 <script>
 import { Panel, Field, Cell, CellGroup, Icon, Dialog, RadioGroup, Radio, Col, Row, Button } from 'vant';
+import result from './result'
 
 export default {
     components:{
@@ -147,7 +172,8 @@ export default {
         Radio,
         Col,
         Row,
-        Button
+        Button,
+        result
     },
     computed:{
         disabled(){
@@ -160,6 +186,7 @@ export default {
     },
     data(){
         return {
+            isResult: true,
             monthIncome: "",
             childrenNum: "",
             childrenUseNum:"",
@@ -242,6 +269,7 @@ export default {
 
             function success(res){
                 console.log(res.data.data)
+                _self.isResult = false
             }
 
             this.$Get(url, config, success)
@@ -290,7 +318,7 @@ export default {
     content: none;
 }
 #panel-content{
-    height: 600px;
+    height: 630px;
     top: 15px;
     margin:15px;
     margin-bottom: 0px;
@@ -356,6 +384,10 @@ export default {
 }
 .van-cell:last-child::after {
     content: none;
+}
+.van-button__text{
+    padding-left: 3px;
+    padding-right: 3px;
 }
 </style>
 
