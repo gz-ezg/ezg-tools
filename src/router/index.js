@@ -19,14 +19,6 @@ Vue.use(Router)
 
 export default new Router({
     routes: [
-        // {
-        //     path:'/index',
-        //     name: 'index',
-        //     component: Index,
-        //     meta: {
-        //         title: "e账柜"
-        //     }
-        // },
         {
             path: "/nametesttool",
             name: 'nameTestTool',
