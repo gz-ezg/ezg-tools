@@ -1,9 +1,15 @@
 <template>
-    <div style="background-color:#f64a42;height:1110px;">
-        <panel title="个税计算" id="panel-title">
+    <div style="background-color:#f64a42;height:1180px;">
+        <panel id="panel-title">
+            <Row>
+                <Col span="12"><center><Button  round :type="{ danger: buttonType == 'specialty', default:buttonType == ''}" @click="buttonType= 'specialty'">专业版</Button></center></Col>
+                <Col span="12"><center><Button  round :type="{ danger: buttonType == '', default:buttonType != ''}" @click="buttonType= ''">精简版</Button></center></Col>
+            </Row>
             <field label="月收入" placeholder="请输入当前收入" input-align="right" v-model="monthIncome"></field>
             <field label="起征点" readonly error value="5000" input-align="right"></field>
-            <field label="五险一金" placeholder="请输入您每月实缴五险一金" input-align="right" v-model="insurance"></field>
+            <field label="五险一金" placeholder="请输入您每月实缴五险一金" input-align="right" v-model="insurance" v-if="buttonType==''"></field>
+            <field label="社保基数" placeholder="请输入社保基数" input-align="right" v-model="insuranceBase" v-if="buttonType=='specialty'"></field>
+            <field label="公积金基数" placeholder="请输入公积金基数" input-align="right" v-model="reserveFundBase" v-if="buttonType=='specialty'"></field>
         </panel>
         <Row v-if="isResult">
             <panel title="抵扣项" id="panel-content">
@@ -150,8 +156,7 @@
             </Row>
         </Row>
         <Row v-else>
-                个税结果
-            <result></result>
+            <result :result="result" @cancel="rebuild"></result>
         </Row>
     </div>
 </template>
@@ -177,7 +182,7 @@ export default {
     },
     computed:{
         disabled(){
-            if(this.monthIncome && this.insurance){
+            if((this.monthIncome && this.insurance && this.buttonType == "") || (this.monthIncome && this.insuranceBase && this.reserveFundBase && this.buttonType == "specialty")) {
                 return false
             }else{
                 return true
@@ -186,6 +191,10 @@ export default {
     },
     data(){
         return {
+            insuranceBase: "",
+            reserveFundBase: "",
+            buttonType: "",
+            result: "",
             isResult: true,
             monthIncome: "",
             childrenNum: "",
@@ -236,6 +245,10 @@ export default {
         }
     },
     methods:{
+        rebuild(){
+            this.isResult=true
+            this.reset()
+        },
         open_child_detail(e){
             Dialog.alert({
                 title: e.title,
@@ -246,7 +259,6 @@ export default {
         computer_tax(){
             let _self = this
             let url = `api/store/tools/tax/calculate`
-
             let temp = ""
             if(_self.housing ==  "1001"){
                 temp = "1000"
@@ -263,12 +275,16 @@ export default {
                     housing: temp,
                     medicalExpenses: _self.medicalExpenses,
                     insurance: _self.insurance,
-                    adultEducation: _self.adultEducation
+                    adultEducation: _self.adultEducation,
+                    type: _self.buttonType,
+                    insuranceBase: _self.insuranceBase,
+                    reserveFundBase: _self.reserveFundBase
                 }
             }
 
             function success(res){
                 console.log(res.data.data)
+                _self.result = res.data.data
                 _self.isResult = false
             }
 
@@ -291,7 +307,7 @@ export default {
 
 <style>
 #panel-title{
-    height: 270px;
+    height: 330px;
     top: 15px;
     margin:15px;
     margin-top: 0px;
@@ -369,6 +385,7 @@ export default {
 .small .van-cell__title{
     font-size: 12px;
     flex: 1;
+    padding: 14rpx 16rpx
 }
 .small .van-cell__value{
     font-size: 10px;

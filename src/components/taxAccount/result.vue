@@ -1,16 +1,77 @@
 <template>
-    <div style="background-color:#f64a42;height:1070px;">
+    <div style="background-color:#f64a42;height:800px;">
         <panel title="计算结果" id="panel-title">
-            <field label="应纳个税" input-align="right" readonly></field>
-            <field label="应纳税所得额" input-align="right" readonly></field>
+            <field label="应纳个税" input-align="right" readonly :value="result.taxTotal"></field>
+            <!-- <field label="应纳税所得额" input-align="right" readonly :value="result.taxTotal"></field> -->
             <!-- <field label="税率" input-align="right"></field> -->
-            <field label="速算扣除数" input-align="right" readonly></field>
-            <field label="税后工资" input-align="right" readonly></field>
+            <!-- <field label="速算扣除数" input-align="right" readonly :value="result.taxTotal"></field> -->
+            <field label="税后工资" input-align="right" readonly :value="result.taxAfter"></field>
             <canvas id="mountNode" ></canvas>
+            <Row style="width:90%;margin:auto;margin-top:20px">
+                <Button size="large" type="primary" @click="re_start" >重新计算</Button>
+            </Row>
         </panel>
+        
         <panel id="panel-content">
             <cell title="工资个人所得税计算公式"></cell>
-            <div style="padding:5px 10px;font-size:14px">应纳税所得额=（月收入-五险一金-起征点-依法确定的其他扣除-专项附加扣除）*适用税率-速算扣除数</div>
+            <div style="padding:5px 20px;font-size:12px">应纳税所得额=（月收入-五险一金-起征点-依法确定的其他扣除-专项附加扣除）x 适用税率 - 速算扣除数</div>
+            <cell title="个人所得税税率表"></cell>
+            <div style="padding:5px 20px;">
+                <table class="table table-striped table-bordered" style="-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;font-size:8px">
+                    <thead>
+                    <tr>
+                        <th>级数</th>
+                        <th>应纳税所得额(含税)</th>
+                        <th>税率(%)</th>
+                        <th>速算扣除数</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>未超过3,000元的部分</td>
+                        <td>3</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>超过3,000元至12,000元的部分</td>
+                        <td>10</td>
+                        <td>210</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>超过12,000元至25,000元的部分</td>
+                        <td>20</td>
+                        <td>1410</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>超过25,000元至35,000元的部分</td>
+                        <td>25</td>
+                        <td>2660</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>超过35,000元至55,000元的部分</td>
+                        <td>30</td>
+                        <td>4410</td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td>超过55,000元至80,000元的部分</td>
+                        <td>35</td>
+                        <td>7160</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>超过80,000元的部分</td>
+                        <td>45</td>
+                        <td>15160</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </panel>
         
     </div>  
@@ -30,6 +91,11 @@ import Legend from '@antv/f2/lib/plugin/legend'
 F2.Chart.plugins.register(Legend);
 F2.Chart.plugins.register(Tooltip);
 export default {
+    props: {
+        result: {
+            Type: [String, Array]
+        }
+    },
     components:{
         Panel,
         Field,
@@ -52,13 +118,13 @@ export default {
             data: [
                 {
                     name: '税后工资',
-                    percent: 0.88,
-                    a: '12000'
+                    percent: (this.result.taxAfter / this.result.taxbefore),
+                    a: "100000"
                 }, 
                 {
                     name: '五险一金和个税',
-                    percent: 0.12,
-                    a: '12000'
+                    percent: (this.result.taxTotal / this.result.taxbefore),
+                    a: "100000"
                 },
             ]
         }
@@ -74,13 +140,7 @@ export default {
             // chart.plugins.register(Tooltip);
             // chart.plugins.register(Legend);
             //  挂载数据
-            chart.source(_self.data, {
-                percent: {
-                    formatter: function formatter(val) {
-                        return val * 100 + '%';
-                    }
-                }
-            });
+            chart.source(_self.data);
             //  内容项标签
             chart.legend({
                 position: 'right',
@@ -108,6 +168,9 @@ export default {
                 }
             });
             chart.render();
+        },
+        re_start(){
+            this.$emit("cancel",true)
         }
     },
     mounted(){
@@ -118,7 +181,7 @@ export default {
 
 <style scoped>
 #panel-title{
-    height: 400px;
+    height: 380px;
     top: 15px;
     margin:15px;
     margin-top: 0px;
@@ -144,7 +207,7 @@ export default {
     box-shadow: none;
 }
 #panel-content{
-    height: 200px;
+    height: 400px;
 }
 </style>
 
