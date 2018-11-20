@@ -8,5 +8,12 @@ module.exports = {
       "libraryDirectory": "es",
       "style": true
     }]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", { "targets": { "node": "current" }}]
+      ]
+    }
+  }
 }

@@ -52,7 +52,7 @@
                         <td>2660</td>
                     </tr>
                     <tr>
-                        <td>6</td>
+                        <td>5</td>
                         <td>超过35,000元至55,000元的部分</td>
                         <td>30</td>
                         <td>4410</td>
@@ -90,6 +90,7 @@ import Tooltip from '@antv/f2/lib/plugin/tooltip'
 import Legend from '@antv/f2/lib/plugin/legend'
 F2.Chart.plugins.register(Legend);
 F2.Chart.plugins.register(Tooltip);
+F2.track(false)
 export default {
     props: {
         result: {
