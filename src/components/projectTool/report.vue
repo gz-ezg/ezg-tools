@@ -31,16 +31,16 @@ export default {
     },
     computed:{
         companyname(){
-            return this.$store.state.companyname
+            return this.$store.state.project.companyname
         },
         name(){
-            return this.$store.state.name
+            return this.$store.state.project.name
         },
         tel(){
-            return this.$store.state.tel
+            return this.$store.state.project.tel
         },
         userid(){
-            return this.$store.state.userid
+            return this.$store.state.project.userid
         }
     },
     methods:{

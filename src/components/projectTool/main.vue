@@ -34,9 +34,9 @@ export default {
             }
         },
         ...mapState({
-            companyname: state => state.companyname,
-            name: state => state.name,
-            tel: state => state.tel
+            companyname: state => state.project.companyname,
+            name: state => state.project.name,
+            tel: state => state.project.tel
         })
     },
     data(){
@@ -51,18 +51,19 @@ export default {
             })
         },
         update_companyname (e) {
-            this.$store.commit('update_companyname', e)
+            this.$store.dispatch('project/update_companyname', e)
         },
         update_name (e) {
-            this.$store.commit('update_name', e)
+            this.$store.dispatch('project/update_name', e)
         },
         update_tel (e) {
-            this.$store.commit('update_tel', e)
+            this.$store.dispatch('project/update_tel', e)
         }
     },
     created(){
         let _self = this
-        this.$store.commit("update_userid", _self.$route.params.id)
+        this.$store.dispatch("project/update_userid", _self.$route.params.id)
+        console.log(this.$store)
     }
 }
 </script>

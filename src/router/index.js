@@ -18,7 +18,10 @@ const projectReport = () => import(/* webpackChunkName: "project" */ '../compone
 // import taxAccount from '../components/taxAccount'
 const taxAccount = () => import(/* webpackChunkName: "taxAccount" */ '../components/taxAccount')
 
-// import taxResult from '../components/taxAccount/result.vue'
+// 异常检测
+const abnormalityIndex = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool')
+const abnormalityLogin = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool/component/login.vue')
+
 Vue.use(Router)
 
 
@@ -65,14 +68,29 @@ export default new Router({
                 title: "个税计算"
             }
         },
-        // {
-        //     path: "/taxResult",
-        //     name: "taxResult",
-        //     component: taxResult,
-        //     meta: {
-        //         title: "计算结果"
-        //     }
-        // },
+        {
+            path: "/abnormality",
+            component: abnormalityIndex,
+            children: [
+                {
+                    path: "/login",
+                    name: "abnormalityLogin",
+                    component: abnormalityLogin,
+                    meta: {
+                        title: "异常查询"
+                    }
+                },
+                {
+                    path: "/",
+                    redirect: {
+                        name: "abnormalityLogin"
+                    },
+                    meta: {
+                        title: "异常查询"
+                    }
+                },
+            ]
+        },
         {
             path: '/',
             redirect: {

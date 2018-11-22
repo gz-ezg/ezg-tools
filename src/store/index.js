@@ -1,36 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import project from './modules/project'
+import abnormality from './modules/abnormality'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-    state: {
-        companyname:"",
-        name: "",
-        tel: "",
-        userid: ""
-    },
-    mutations: {
-        update_companyname (state, companyname) {
-            state.companyname = companyname
-        },
-        update_name (state, name) {
-            state.name = name
-        },
-        update_tel (state, tel) {
-            state.tel = tel
-        },
-        update_userid (state, userid) {
-            state.userid = userid
-        },
-    },
-    actions: {
-        // get_companyname: (state) => {
-        //     return state.companyname
-        // }
-    },
     modules: {
-
+        project,
+        abnormality
     }
 });
 
