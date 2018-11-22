@@ -5,11 +5,14 @@
             v-else
             v-html="text"
             style="padding:15px"
-        ></div>
+        >
+        </div>
     </div>
 </template>
+
 <script>
 import {Loading, Toast } from 'vant';
+
 export default {
     components:{
         Loading,
