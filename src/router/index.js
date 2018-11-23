@@ -21,12 +21,14 @@ const taxAccount = () => import(/* webpackChunkName: "taxAccount" */ '../compone
 // 异常检测
 const abnormalityIndex = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool')
 const abnormalityLogin = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool/component/login.vue')
+const abnormalityError = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool/component/error.vue')
+const abnormalityDetail = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool/component/detail.vue')
 
 Vue.use(Router)
 
 
 export default new Router({
-    mode:'history',
+    // mode:'history',
     routes: [
         {
             path: "/nametesttool",
@@ -73,11 +75,27 @@ export default new Router({
             component: abnormalityIndex,
             children: [
                 {
-                    path: "/login",
+                    path: "login",
                     name: "abnormalityLogin",
                     component: abnormalityLogin,
                     meta: {
                         title: "异常查询"
+                    }
+                },
+                {
+                    path: "error",
+                    name: "abnormalityError",
+                    component: abnormalityError,
+                    meta: {
+                        title: "查询结果"
+                    }
+                },
+                {
+                    path: "detail",
+                    name: "abnormalityDetail",
+                    component: abnormalityDetail,
+                    meta: {
+                        title: "查询结果"
                     }
                 },
                 {
@@ -94,7 +112,7 @@ export default new Router({
         {
             path: '/',
             redirect: {
-                name: "taxAccount"
+                name: "abnormalityLogin"
             }
         }
     ]

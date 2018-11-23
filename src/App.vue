@@ -10,6 +10,7 @@
 
 <script>
 // import { Tabbar, TabbarItem } from 'vant';
+import VConsole from 'vconsole/dist/vconsole.min.js'
 
 export default {
   name: 'app',
@@ -21,6 +22,9 @@ export default {
     return {
       active: 0
     }
+  },
+  created(){
+    let vConsole = new VConsole()
   }
 }
 </script>

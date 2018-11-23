@@ -1,8 +1,8 @@
 <template>
     <div class="main">
         <div style="margin-top:10px!important;width:80%;margin:auto">
-            <field :value="companyname" @input="update_companyname" label="公司名称" placeholder="请输入公司名称"></field>
-            <field :value="mobile" @input="update_mobile" label="手机号码" placeholder="请输入手机号码"></field>
+            <field :value="companyname" @input="update_companyname" label="公司名称" placeholder="请输入公司名称" />
+            <field :value="mobile" @input="update_mobile" label="手机号码" placeholder="请输入手机号码"/>
             <field
                 v-model="yzm"
                 type="number"
@@ -13,19 +13,22 @@
                 <Button slot="button" size="small" type="default" @click="require_code" v-if="yzmDisable" disabled >{{time}}秒后重新获取</Button>
             </field>
             <Button type="danger" size="large" @click="submit" :disabled="disabled" :loading="!loading" style="margin-top:5px">立刻查询</Button>
+            <!-- <Button type="danger" size="large" @click="wx_share" style="margin-top:5px">分享</Button> -->
+
         </div>
     </div>
 </template>
 
 <script>
-import { Button, Field, Loading, Toast, NavBar  } from 'vant';
+import { Button, Field, Toast, NavBar  } from 'vant';
 import { mapState } from 'vuex'
+import common from '../common.js'
 
 export default {
+    // mixins: [common],
     components: {
         Button,
         Field,
-        Loading,
         Toast
     },
     computed: {
@@ -63,6 +66,7 @@ export default {
             }
         },
         submit(){
+            //  提交的部分，改为在vuex中处理
             let _self = this
             let url = `api/store/mobile/user/login`
             let config = {
@@ -74,10 +78,10 @@ export default {
                 console.log(res)
                 localStorage.setItem("customerId",res.data.data.customer_id)
                 _self.$router.push({
-                name:'serviceCenterIndex',
-                params:{
-                    id: res.data.data.customer_id
-                }
+                    name:'serviceCenterIndex',
+                    params:{
+                        id: res.data.data.customer_id
+                    }
                 })
             }
 
