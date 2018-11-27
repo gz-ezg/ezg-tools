@@ -164,8 +164,10 @@
 <script>
 import { Panel, Field, Cell, CellGroup, Icon, Dialog, RadioGroup, Radio, Col, Row, Button } from 'vant';
 import result from './result'
+import common from '../../libs/common.js';
 
 export default {
+    mixins: [common],
     components:{
         Panel,
         Field,
