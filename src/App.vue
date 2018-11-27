@@ -24,7 +24,7 @@ export default {
     }
   },
   created(){
-    let vConsole = new VConsole()
+    // let vConsole = new VConsole()
   }
 }
 </script>
