@@ -28,7 +28,7 @@ export default {
                         timestamp: res.data.data.timestamp, // 必填，生成签名的时间戳
                         nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
                         signature: res.data.data.sign,// 必填，签名，见附录1
-                        jsApiList: ["updateAppMessageShareData","onMenuShareAppMessage","updateTimelineShareData"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        jsApiList: ["updateAppMessageShareData","onMenuShareAppMessage","updateTimelineShareData","scanQRCode"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                     })
                     wx.error(function(res){
                         console.log(res)
@@ -59,34 +59,25 @@ export default {
                 //     }
                 // });
                 //  旧版，准备废弃
-                wx.updateAppMessageShareData({ 
-                    title: '个税计算管家', // 分享标题
-                    desc: '2018最新个人所得税计算器，操作十分简单的新个税计算器！根据最新通过的个人所得税法及专项扣除暂行办法计算最新个人所得税。', // 分享描述
-                    link: 'http://tools.zgcfo.com/#/taxaccount', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: 'http://tools.zgcfo.com/images/logo.png', // 分享图标
-                    success: function () {
-                        // 设置成功
-                    }}),
+                wx.onMenuShareAppMessage({
+                    title: '发票校验', // 分享标题
+                    desc: '发票真伪，一看便知！', // 分享描述
+                    link: 'http://tools.zgcfo.com/#/invoice', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    imgUrl: 'http://tools.zgcfo.com/logo.png', // 分享图标
+                    type: '', // 分享类型,music、video或link，不填默认为link
+                    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                    success: function (res) {
+                        // 用户点击了分享后执行的回调函数
+                        // console.log(res)
+                    }
+                });
                 wx.updateTimelineShareData({ 
-                    title: '个税计算管家', // 分享标题
-                    // desc: '2018最新个人所得税计算器，操作十分简单的新个税计算器！根据最新通过的个人所得税法及专项扣除暂行办法计算最新个人所得税。', // 分享描述
-                    link: 'http://tools.zgcfo.com/#/taxaccount', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                    title: '发票校验', // 分享标题
+                    link: 'http://tools.zgcfo.com/#/invoice', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://tools.zgcfo.com/images/logo.png', // 分享图标
                     success: function () {
-                        // 设置成功
+                    // 设置成功
                 }})
-                // wx.onMenuShareAppMessage({
-                //     title: '个税计算管家', // 分享标题
-                //     desc: '2018最新个人所得税计算器，操作十分简单的新个税计算器！根据最新通过的个人所得税法及专项扣除暂行办法计算最新个人所得税。', // 分享描述
-                //     link: 'http://tools.zgcfo.com/#/taxaccount', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                //     imgUrl: 'http://tools.zgcfo.com/images/logo.png', // 分享图标
-                //     type: '', // 分享类型,music、video或link，不填默认为link
-                //     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                //     success: function (res) {
-                //         // 用户点击了分享后执行的回调函数
-                //         console.log("分享成功")
-                //     }
-                // });
             });
         }
     },

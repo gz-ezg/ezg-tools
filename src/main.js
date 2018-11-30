@@ -14,7 +14,7 @@ if(process.env.NODE_ENV === 'production'){
 }else if (process.env.NODE_ENV === 'jenkins'){
     host = 'http://tools.roderickt1an.cn'
 }else{
-    host = 'http://localhost:8080'
+    host = 'http://localhost'
     // host = 'http://tools.zgcfo.com'
 }
 

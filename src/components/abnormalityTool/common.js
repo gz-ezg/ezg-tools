@@ -1,11 +1,18 @@
+import { mapState } from 'vuex'
+import { rmdirSync } from 'fs';
+
 export default {
-    name: "wx_local",
     data() {
         return {
             addr: "暂无",
             localLoading: true,
             returnNumber : 0
         }
+    },
+    computed: {
+        ...mapState({
+            mobile: state => state.abnormality.mobile
+        }),
     },
     methods: {
         //  微信授信初始化
@@ -28,7 +35,7 @@ export default {
                         timestamp: res.data.data.timestamp, // 必填，生成签名的时间戳
                         nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
                         signature: res.data.data.sign,// 必填，签名，见附录1
-                        jsApiList: ["updateAppMessageShareData","onMenuShareAppMessage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        jsApiList: ["updateAppMessageShareData","onMenuShareAppMessage","scanQRCode"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
                     })
                     wx.error(function(res){
                         console.log(res)
@@ -47,6 +54,7 @@ export default {
         },
         //  获取当前地址
         wx_share(){
+            let _self = this
             wx.ready(function(){
                 //  新版，调试暂时无法启用，暂未开启
                 // wx.updateAppMessageShareData({
@@ -67,11 +75,33 @@ export default {
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                     success: function (res) {
+                        if(_self.mobile){
+                            _self.share_reback_do()
+                        }else{
+                            return true
+                        }
                         // 用户点击了分享后执行的回调函数
-                        // console.log(res)
                     }
                 });
             });
+        },
+        share_reback_do(){
+            let _self = this
+            let url = `api/customer/company/searchuser/shareRebackDo`
+
+            let config = {
+                mobile: _self.mobile
+            }
+
+            function success(res){
+
+            }
+
+            function faiL(err){
+
+            }
+
+            this.$Post(url, config, success, fail)
         }
     },
     created() {

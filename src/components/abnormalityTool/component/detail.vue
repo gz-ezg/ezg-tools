@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="margin-top:10px">
         <Row><center><h4 style="font-weight:600">您的企业共<span style="color:red;padding:0px 6px">{{errorNum}}</span>个异常记录</h4></center></Row>
         <div>
             <div v-if="loading">
@@ -22,17 +22,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>国税</td>
-                                <td>企业所得税</td>
-                                <td>201801</td>
-                                <td>201812</td>
-                            </tr>
-                            <tr>
-                                <td>国税</td>
-                                <td>企业所得税</td>
-                                <td>201801</td>
-                                <td>201812</td>
+                            <tr v-for="(item, index) in detail.tax" :key="index">
+                                <td>{{item.gdslx}}</td>
+                                <td>{{item.zsxmmc}}</td>
+                                <td>{{item.skssqq}}</td>
+                                <td>{{item.skssqz}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -55,11 +49,13 @@
             <div v-else>
                 <center><h4>工商异常</h4></center>
                 <div v-if="commerce">
-                    <cell-group style="margin:auto;width:95%">
-                        <cell id="labelem" title="列入经营异常名录的原因" label="通过登记住所无法联系，通过登记住所无法联系，通过登记住所无法联系，通过登记住所无法联系，通过登记住所无法联系，通过登记住所无法联系，通过登记住所无法联系，"></cell>
-                        <cell title="列入日期" value="2017年8月03日"></cell>
-                        <cell id="depart" title="决定机关" value="广州市天河区工商行政管理局"></cell>
-                    </cell-group>
+                    <template v-for="(item, index ) in detail.business">
+                        <cell-group style="margin:auto;width:95%" :key="index">
+                            <cell id="labelem" :title="item.result" :url="item.url" value="详情" is-link></cell>
+                            <cell title="法定代表人" :value="item.name1"></cell>
+                            <cell title="统一社会信用代码" :value="item.taxno"></cell>
+                        </cell-group>
+                    </template>
                 </div>
                 <div v-else>
                     <center>
@@ -68,27 +64,36 @@
                 </div>
             </div>
         </div>
-        <Row style="margin-top:20px">
+        <div style="margin:auto;width:80%;margin-top:10px">
+            <p>* <span style="color:red;font-size:14px">以上结果仅供参考</span>，最终结果以税务局及工商局公示为准！</p>
+        </div>
+        <Row style="margin-top:20px;padding-bottom:20px">
             <Col span="12">
-                <Button type="default" style="margin-left:20px;width:80%">获取实时监控</Button>
+                <Button type="default" style="margin-left:20px;width:80%" @click="$router.go(-1)">返回</Button>
             </Col>
             <Col span="12">
-                <Button type="primary" style="margin-left:20px;width:80%">分享获得查询次数</Button>
+                <Button type="primary" style="margin-left:20px;width:80%" @click="open_check_more">获取更多查询次数</Button>
             </Col>
         </Row>
     </div>
 </template>
 
 <script>
-import { Panel, Field, Cell, CellGroup, Icon, Col, Row, Button, Loading } from 'vant'
+import common from '../common.js'
+import { mapState } from 'vuex'
+import { Panel, Field, Cell, CellGroup, Icon, Col, Row, Button, Loading, Dialog } from 'vant'
+// import VConsole from 'vconsole/dist/vconsole.min.js'
+
 export default {
+    // mixins: [common],
     components: {
         Col,
         Row,
         Button,
         Loading,
         CellGroup,
-        Cell
+        Cell,
+        Dialog
     },
     data(){
         return {
@@ -97,6 +102,31 @@ export default {
             errorNum: 0,
             loading: false
         }
+    },
+    computed: {
+        ...mapState({
+            detail: state => state.abnormality.detail,
+        }),
+    },
+    methods: {
+        // share(){
+        //     console.log("12345")
+        //     WeixinJSBridge.on('menu:share:appmessage', function(argv){ alert("发送给好友"); });
+        // },
+        open_check_more(){
+            Dialog.alert({
+                title: '点击右上角分享可以获得查询机会哦！',
+            }).then(() => {
+                // on close
+            });
+        }
+    },
+    mounted(){
+        console.log(this.detail)
+        this.taxation = this.detail.tax.length ? true : false
+        this.commerce = this.detail.business.length ? true : false
+        this.errorNum = this.detail.tax.length + this.detail.business.length
+        // let vconsole = new VConsole()
     }
 }
 </script>

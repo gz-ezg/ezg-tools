@@ -24,6 +24,8 @@ const abnormalityLogin = () => import(/* webpackChunkName: "abnormality" */ '../
 const abnormalityError = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool/component/error.vue')
 const abnormalityDetail = () => import(/* webpackChunkName: "abnormality" */ '../components/abnormalityTool/component/detail.vue')
 
+// 发票检测
+const InvoiceIndex = () => import(/* webpackChunkName: "abnormality" */ '../components/invoice/index.vue')
 Vue.use(Router)
 
 
@@ -108,6 +110,14 @@ export default new Router({
                     }
                 },
             ]
+        },
+        {
+            path: "/invoice",
+            name: "invoice",
+            component: InvoiceIndex,
+            meta: {
+                title: "发票校验"
+            }
         },
         {
             path: '/',

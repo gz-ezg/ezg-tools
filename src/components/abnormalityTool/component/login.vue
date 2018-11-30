@@ -1,7 +1,8 @@
 <template>
-    <div class="main">
+    <div class="main" style="margin-top:20vh">
         <div style="margin-top:10px!important;width:80%;margin:auto">
             <field :value="companyname" @input="update_companyname" label="公司名称" placeholder="请输入公司名称" />
+            <field :value="name" @input="update_name" label="联系人" placeholder="请输入联系人名称" />
             <field :value="mobile" @input="update_mobile" label="手机号码" placeholder="请输入手机号码"/>
             <field
                 v-model="yzm"
@@ -13,8 +14,6 @@
                 <Button slot="button" size="small" type="default" @click="require_code" v-if="yzmDisable" disabled >{{time}}秒后重新获取</Button>
             </field>
             <Button type="danger" size="large" @click="submit" :disabled="disabled" :loading="!loading" style="margin-top:5px">立刻查询</Button>
-            <!-- <Button type="danger" size="large" @click="wx_share" style="margin-top:5px">分享</Button> -->
-
         </div>
     </div>
 </template>
@@ -33,7 +32,7 @@ export default {
     },
     computed: {
         disabled(){
-            if(this.companyname && this.mobile && this.code){
+            if(this.companyname && this.mobile && this.yzm && this.name){
                 return false
             }else{
                 return true
@@ -41,7 +40,8 @@ export default {
         },
         ...mapState({
             companyname: state => state.abnormality.companyname,
-            mobile: state => state.abnormality.mobile
+            mobile: state => state.abnormality.mobile,
+            name: state => state.abnormality.name
         }),
     },
     data(){
@@ -68,26 +68,37 @@ export default {
         submit(){
             //  提交的部分，改为在vuex中处理
             let _self = this
-            let url = `api/store/mobile/user/login`
+            _self.loading = true
+            let url = `api/customer/company/searchuser/searchResult`
             let config = {
                 mobile: _self.mobile,
-                code: _self.yzm
+                code: _self.yzm,
+                enterprise: _self.companyname,
+                name: _self.name
             }
 
             function success(res){
-                console.log(res)
-                localStorage.setItem("customerId",res.data.data.customer_id)
+                // console.log(res)
+                _self.loading = false
+                _self.$store.dispatch('abnormality/update_detail', res.data.data)
                 _self.$router.push({
-                    name:'serviceCenterIndex',
-                    params:{
-                        id: res.data.data.customer_id
-                    }
+                    name: "abnormalityDetail"
                 })
             }
 
             function fail(err){
                 console.error(err)
-                _self.$toast.fail("登录失败！")
+                _self.$toast.fail(err.data.msg)
+                if(err.data.msg == "没有查询次数"){
+                    _self.$router.push({
+                        name: "abnormalityError",
+                        params: {
+                            status: 1
+                        }
+                    })
+                }else{
+                    Toast.fail("系统不小心走丢了...")
+                }
             }
 
             this.$Post(url, config, success, fail)
@@ -96,7 +107,7 @@ export default {
             let _self = this
             if(this.is_mobile_number()){
                 console.log("手机号正确！")
-                let url = `api/store/mobile/user/sendMsg`
+                let url = `api/customer/company/searchuser/sendMsg`
                 let config = {
                     mobile: _self.mobile
                 }
@@ -144,6 +155,9 @@ export default {
         },
         update_mobile(e){
             this.$store.dispatch('abnormality/update_mobile', e)
+        },
+        update_name(e){
+            this.$store.dispatch('abnormality/update_name', e)
         }
     },
     created(){
