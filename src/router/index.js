@@ -116,7 +116,7 @@ export default new Router({
             name: "invoice",
             component: InvoiceIndex,
             meta: {
-                title: "发票校验"
+                title: "发票查验"
             }
         },
         {

@@ -14,8 +14,8 @@ if(process.env.NODE_ENV === 'production'){
 }else if (process.env.NODE_ENV === 'jenkins'){
     host = 'http://tools.roderickt1an.cn'
 }else{
-    host = 'http://localhost'
-    // host = 'http://tools.zgcfo.com'
+    // host = 'http://localhost'
+    host = 'http://tools.zgcfo.com'
 }
 
 let instance = axios.create({
@@ -74,15 +74,26 @@ router.beforeEach((to, from, next) => {
 })
 
 if ( process.env.NODE_ENV === "production"){
+    
+    //  百度统计query
+    let queryMap = new Map()
+
+    queryMap.set("taxAccount", "6a65d06ab5a698f143e31c1db0ddec13")
+    queryMap.set("nameTestTool", "cd8fe9f7caf9fff5c7036bdf7638f458")
+    queryMap.set("nameCheckTool", "b5f4d5510d1376d002fa68fa1a6a0051")
+
     router.beforeEach((to, from, next) => {
-        let query
-        if(to.name == "taxAccount"){
-            query = "6a65d06ab5a698f143e31c1db0ddec13"
-        }else if(to.name == "nameTestTool"){
-            query = "cd8fe9f7caf9fff5c7036bdf7638f458"
-        }else if(to.name == "nameCheckTool"){
-            query = "b5f4d5510d1376d002fa68fa1a6a0051"
-        }
+        // let query
+        // if(to.name == "taxAccount"){
+        //     query = "6a65d06ab5a698f143e31c1db0ddec13"
+        // }else if(to.name == "nameTestTool"){
+        //     query = "cd8fe9f7caf9fff5c7036bdf7638f458"
+        // }else if(to.name == "nameCheckTool"){
+        //     query = "b5f4d5510d1376d002fa68fa1a6a0051"
+        // }
+
+        let query = queryMap.get(to.name)
+        if(query){
             setTimeout(()=>{
                 let _hmt = _hmt || [];
                 (function() {
@@ -95,6 +106,7 @@ if ( process.env.NODE_ENV === "production"){
                     s.parentNode.insertBefore(hm, s);
                 })();
             },0);
+        }
         next();
     })
 }
