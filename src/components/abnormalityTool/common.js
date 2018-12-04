@@ -1,6 +1,5 @@
 import { mapState } from 'vuex'
-import { rmdirSync } from 'fs';
-
+import { Toast } from 'vant'
 export default {
     data() {
         return {
@@ -30,7 +29,7 @@ export default {
                 function success(res){
                     wx.config({
                         beta: true,// 必须这么写，否则wx.invoke调用形式的jsapi会有问题
-                        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                         appId: 'wx1daf95d4275b0be1', // 必填，企业微信的corpID
                         timestamp: res.data.data.timestamp, // 必填，生成签名的时间戳
                         nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
@@ -39,12 +38,12 @@ export default {
                     })
                     wx.error(function(res){
                         console.log(res)
-                        _self.$toast.fail(res.errMsg)
+                        Toast.fail(res.errMsg)
                         _self.returnNumber++;
                         if(_self.returnNumber < 5){
                             _self.wx_init()
                         }else{
-                            _self.$toast.fail("js-sdk异常，已超过最大重试次数 ！")
+                            Toast.fail("js-sdk异常，已超过最大重试次数 ！")
                         }
                     });
                     resolve()
@@ -56,31 +55,18 @@ export default {
         wx_share(){
             let _self = this
             wx.ready(function(){
-                //  新版，调试暂时无法启用，暂未开启
-                // wx.updateAppMessageShareData({
-                //     title: '快来体验下', // 分享标题
-                //     desc: '一查便知', // 分享描述
-                //     link: 'http://tools.zgcfo.com/#/abnormality/login', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                //     imgUrl: '', // 分享图标
-                //     success: function () {
-                //         console.log("123")
-                //     }
-                // });
-                //  旧版，准备废弃
                 wx.onMenuShareAppMessage({
-                    title: '一查便知', // 分享标题
-                    desc: '快来体验下', // 分享描述
+                    title: '企业异常，一查便知', // 分享标题
+                    desc: '您是否还在为你的企业是否被工商税务部门列为异常而感到烦恼？你是否还不清楚怎么查询自己的企业是否异常？e账柜异常检测，为您解忧！(数据仅供参考，详询400-88-12580)', // 分享描述
                     link: 'http://tools.zgcfo.com/#/abnormality/login', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://tools.zgcfo.com/logo.png', // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                     success: function (res) {
+                        console.log(_self.mobile)
                         if(_self.mobile){
                             _self.share_reback_do()
-                        }else{
-                            return true
                         }
-                        // 用户点击了分享后执行的回调函数
                     }
                 });
             });
@@ -94,10 +80,12 @@ export default {
             }
 
             function success(res){
-
+                if(_self.$route.name === "abnormalityError"){
+                    _self.$router.go(-1)
+                }
             }
 
-            function faiL(err){
+            function fail(err){
 
             }
 

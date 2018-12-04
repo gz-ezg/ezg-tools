@@ -1,3 +1,4 @@
+import { Toast } from 'vant';
 export default {
     name: "wx_local",
     data() {
@@ -32,12 +33,12 @@ export default {
                     })
                     wx.error(function(res){
                         console.log(res)
-                        _self.$toast.fail(res.errMsg)
+                        Toast.fail(res.errMsg)
                         _self.returnNumber++;
                         if(_self.returnNumber < 5){
                             _self.wx_init()
                         }else{
-                            _self.$toast.fail("js-sdk异常，已超过最大重试次数 ！")
+                            Toast.fail("js-sdk异常，已超过最大重试次数 ！")
                         }
                     });
                     resolve()
@@ -48,17 +49,6 @@ export default {
         //  获取当前地址
         wx_share(){
             wx.ready(function(){
-                //  新版，调试暂时无法启用，暂未开启
-                // wx.updateAppMessageShareData({
-                //     title: '快来体验下', // 分享标题
-                //     desc: '一查便知', // 分享描述
-                //     link: 'http://tools.zgcfo.com/#/abnormality/login', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                //     imgUrl: '', // 分享图标
-                //     success: function () {
-                //         console.log("123")
-                //     }
-                // });
-                //  旧版，准备废弃
                 wx.updateAppMessageShareData({ 
                     title: '个税计算管家', // 分享标题
                     desc: '2018最新个人所得税计算器，操作十分简单的新个税计算器！根据最新通过的个人所得税法及专项扣除暂行办法计算最新个人所得税。', // 分享描述
@@ -75,18 +65,6 @@ export default {
                     success: function () {
                         // 设置成功
                 }})
-                // wx.onMenuShareAppMessage({
-                //     title: '个税计算管家', // 分享标题
-                //     desc: '2018最新个人所得税计算器，操作十分简单的新个税计算器！根据最新通过的个人所得税法及专项扣除暂行办法计算最新个人所得税。', // 分享描述
-                //     link: 'http://tools.zgcfo.com/#/taxaccount', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                //     imgUrl: 'http://tools.zgcfo.com/images/logo.png', // 分享图标
-                //     type: '', // 分享类型,music、video或link，不填默认为link
-                //     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-                //     success: function (res) {
-                //         // 用户点击了分享后执行的回调函数
-                //         console.log("分享成功")
-                //     }
-                // });
             });
         }
     },

@@ -37,7 +37,8 @@ export default new Router({
             name: 'nameTestTool',
             component: nameTestTool,
             meta: {
-                title: "企业名称解析"
+                title: "企业名称解析",
+                index: 9999
             }
         },
         {
@@ -45,7 +46,8 @@ export default new Router({
             name: 'nameCheckTool',
             component: nameCheckTool,
             meta: {
-                title: "企业名称测算"
+                title: "企业名称测算",
+                index: 1
             }
         },
         {
@@ -53,7 +55,8 @@ export default new Router({
             name: "projectTool",
             component: projectTool,
             meta: {
-                title: "方案工具"
+                title: "方案工具",
+                index: 9999
             }
         },
         {
@@ -61,7 +64,8 @@ export default new Router({
             name: "projectReport",
             component: projectReport,
             meta: {
-                title: "方案工具"
+                title: "方案工具",
+                index: 9999
             }
         },
         {
@@ -69,7 +73,8 @@ export default new Router({
             name: "taxAccount",
             component: taxAccount,
             meta: {
-                title: "个税计算"
+                title: "个税计算",
+                index: 2
             }
         },
         {
@@ -81,7 +86,8 @@ export default new Router({
                     name: "abnormalityLogin",
                     component: abnormalityLogin,
                     meta: {
-                        title: "异常查询"
+                        title: "异常查询",
+                        index: 3
                     }
                 },
                 {
@@ -89,7 +95,8 @@ export default new Router({
                     name: "abnormalityError",
                     component: abnormalityError,
                     meta: {
-                        title: "查询结果"
+                        title: "查询结果",
+                        index: 3
                     }
                 },
                 {
@@ -97,7 +104,8 @@ export default new Router({
                     name: "abnormalityDetail",
                     component: abnormalityDetail,
                     meta: {
-                        title: "查询结果"
+                        title: "查询结果",
+                        index: 3
                     }
                 },
                 {
@@ -106,7 +114,8 @@ export default new Router({
                         name: "abnormalityLogin"
                     },
                     meta: {
-                        title: "异常查询"
+                        title: "异常查询",
+                        index: 3
                     }
                 },
             ]
@@ -116,7 +125,8 @@ export default new Router({
             name: "invoice",
             component: InvoiceIndex,
             meta: {
-                title: "发票查验"
+                title: "发票查验",
+                index: 0
             }
         },
         {

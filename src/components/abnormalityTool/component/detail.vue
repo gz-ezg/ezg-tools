@@ -51,9 +51,9 @@
                 <div v-if="commerce">
                     <template v-for="(item, index ) in detail.business">
                         <cell-group style="margin:auto;width:95%" :key="index">
-                            <cell id="labelem" :title="item.result" :url="item.url" value="详情" is-link></cell>
-                            <cell title="法定代表人" :value="item.name1"></cell>
-                            <cell title="统一社会信用代码" :value="item.taxno"></cell>
+                            <cell class="labelem" :title="item.result" :url="item.url" value="详情" is-link></cell>
+                            <cell class="labelem" title="法定代表人" :value="item.name1"></cell>
+                            <cell class="labelem" title="统一社会信用代码" :value="item.taxno"></cell>
                         </cell-group>
                     </template>
                 </div>
@@ -79,13 +79,14 @@
 </template>
 
 <script>
-import common from '../common.js'
+import abnormalCommon from '../common.js'
 import { mapState } from 'vuex'
-import { Panel, Field, Cell, CellGroup, Icon, Col, Row, Button, Loading, Dialog } from 'vant'
+import { Panel, Field, Cell, CellGroup, Icon, Col, Row, Button, Loading, Dialog, Toast } from 'vant'
+import { setTimeout } from 'timers';
 // import VConsole from 'vconsole/dist/vconsole.min.js'
 
 export default {
-    // mixins: [common],
+    mixins: [abnormalCommon],
     components: {
         Col,
         Row,
@@ -93,7 +94,8 @@ export default {
         Loading,
         CellGroup,
         Cell,
-        Dialog
+        Dialog,
+        Toast
     },
     data(){
         return {
@@ -106,6 +108,7 @@ export default {
     computed: {
         ...mapState({
             detail: state => state.abnormality.detail,
+            companyname: state => state.abnormality.companyname
         }),
     },
     methods: {
@@ -122,21 +125,28 @@ export default {
         }
     },
     mounted(){
-        console.log(this.detail)
+        let _self = this
+        if(!this.companyname){
+            Toast.fail("没有填写公司名称！正在返回首页！")
+            setTimeout(()=>{
+                _self.$router.push({
+                    name: "abnormalityLogin"
+                })
+            },500)
+        }
         this.taxation = this.detail.tax.length ? true : false
         this.commerce = this.detail.business.length ? true : false
         this.errorNum = this.detail.tax.length + this.detail.business.length
-        // let vconsole = new VConsole()
     }
 }
 </script>
 
 <style>
-#labelem .van-cell__label{
-    text-indent: 2em
+.labelem .van-cell__title{
+    font-size:12px!important;
 }
 
-#depart .van-cell__value{
+.labelem .van-cell__value{
     font-size: 12px
 }
 </style>

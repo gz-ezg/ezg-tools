@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="padding-bottom:20px">
         <nav-bar title="企业异常检测" />
         <router-view></router-view>
     </div>

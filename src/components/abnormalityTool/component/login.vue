@@ -21,10 +21,10 @@
 <script>
 import { Button, Field, Toast, NavBar  } from 'vant';
 import { mapState } from 'vuex'
-import common from '../common.js'
+import abnormalCommon from '../common.js'
 
 export default {
-    // mixins: [common],
+    mixins: [ abnormalCommon ],
     components: {
         Button,
         Field,
@@ -59,7 +59,7 @@ export default {
             let reg = /^[1][0-9]{10}$/
             console.log(_self.mobile)
             if(!reg.test(_self.mobile)){
-                _self.$toast.fail("请输入正确的手机号！")
+                Toast.fail("请输入正确的手机号！")
                 return false
             }else{
                 return true
@@ -106,14 +106,14 @@ export default {
         require_code(){
             let _self = this
             if(this.is_mobile_number()){
-                console.log("手机号正确！")
+                // console.log("手机号正确！")
                 let url = `api/customer/company/searchuser/sendMsg`
                 let config = {
                     mobile: _self.mobile
                 }
-
+                _self.yzmDisable = true                
                 function success(res){
-                    _self.$toast.success(res.data.msg)
+                    Toast.success(res.data.msg)
                     _self.isLogin = false
                     _self.yzmDisable = true
                     _self.time = 60
@@ -121,7 +121,7 @@ export default {
                 }
 
                 function fail(err){
-                    _self.$toast.fail(err.data.msg)
+                    Toast.fail(err.data.msg)
                 }
 
                 this.$Post(url, config, success, fail)
@@ -161,7 +161,8 @@ export default {
         }
     },
     created(){
-        console.log(this.$store)
+        // console.log(this.$store)
     }
 }
 </script>
+

@@ -1,3 +1,5 @@
+import { Toast } from 'vant'
+
 export default {
     name: "wx_local",
     data() {
@@ -32,12 +34,12 @@ export default {
                     })
                     wx.error(function(res){
                         console.log(res)
-                        _self.$toast.fail(res.errMsg)
+                        Toast.fail(res.errMsg)
                         _self.returnNumber++;
                         if(_self.returnNumber < 5){
                             _self.wx_init()
                         }else{
-                            _self.$toast.fail("js-sdk异常，已超过最大重试次数 ！")
+                            Toast.fail("js-sdk异常，已超过最大重试次数 ！")
                         }
                     });
                     resolve()
@@ -61,7 +63,7 @@ export default {
                 //  旧版，准备废弃
                 wx.onMenuShareAppMessage({
                     title: '发票校验', // 分享标题
-                    desc: '发票真伪，一看便知！', // 分享描述
+                    desc: '发票真伪，一扫便知！', // 分享描述
                     link: 'http://tools.zgcfo.com/#/invoice', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                     imgUrl: 'http://tools.zgcfo.com/logo.png', // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link

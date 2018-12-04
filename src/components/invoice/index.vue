@@ -11,7 +11,7 @@
             <div style="width:100%;margin:auto" v-if="result">
                 <p><center id="check" style="margin-top:20px">查询结果</center></p>
                 <cell-group>
-                    <cell title="发票状态" :value="data.invoiceStatus"></cell>
+                    <cell title="发票状态" :value="data.invoiceStatus" :class="[data.invoiceStatus=='正常'?'status-success':'status-error']"></cell>
                     <cell title="发票代码" :value="data.invoiceCode"></cell>
                     <cell title="发票号码" :value="data.invoiceNum"></cell>
                     <cell title="开票时间" :value="data.invoiceTime"></cell>
@@ -111,13 +111,13 @@ export default {
         }
     },
     created(){
-        // this.data = JSON.parse('{"cycs":"5","invoiceCode":"4400163160","invoiceNum":"01858748","invoiceStatus":1,"invoiceTime":"2018-07-19","moneyOrCode":"27691.91","saleName":"广州******家税务局"}')
+        this.data = JSON.parse('{"cycs":"5","invoiceCode":"4400163160","invoiceNum":"01858748","invoiceStatus":1,"invoiceTime":"2018-07-19","moneyOrCode":"27691.91","saleName":"广州******家税务局"}')
         
     }
 }
 </script>
 
-<style scoped>
+<style>
 .van-nav-bar{
     background-color: #CC3300;
     color: white;
@@ -126,5 +126,11 @@ export default {
     color: #cc3300;
     font-size: 20px;
     font-weight: 700;
+}
+.status-error .van-cell__value>span{
+    color: #CC3300;
+}
+.status-success .van-cell__value>span{
+    color:green;
 }
 </style>

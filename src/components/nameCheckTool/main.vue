@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-    <div style="background-color:#f64a42;height:100vh;overflow-y:hidden">
+    <div style="background-color:#f64a42;height:110vh;overflow-y:hidden">
         <img src="./static/header.png" style="width:100%;height:27vh;">
         <div class="main" style="margin-top:-10px">
             <center>
@@ -190,7 +190,7 @@ export default {
     padding-top:4vh;
     background-image: url('static/main2.png');
     background-size: 100%;
-    height: 68vh;
+    height: 85vh;
     border:3vw solid #f64a42;
     border-top:none;
     border-bottom:2vh solid #f64a42

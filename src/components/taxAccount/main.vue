@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color:#f64a42;height:1180px;">
+    <div style="background-color:#f64a42;height:1250px">
         <panel id="panel-title">
             <Row>
                 <Col span="12"><center><Button  round :type="{ danger: buttonType == 'specialty', default:buttonType == ''}" @click="buttonType= 'specialty'">专业版</Button></center></Col>
@@ -164,7 +164,7 @@
 <script>
 import { Panel, Field, Cell, CellGroup, Icon, Dialog, RadioGroup, Radio, Col, Row, Button } from 'vant';
 import result from './result'
-import common from '../../libs/common.js';
+import common from './common.js';
 
 export default {
     mixins: [common],
