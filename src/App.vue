@@ -14,9 +14,9 @@
         <i class="iconfont icon-geshuishenbao" slot="icon" slot-scope="props"></i>
         个税管家
       </van-tabbar-item>
-      <van-tabbar-item to="/abnormality">
+      <van-tabbar-item to="/project/10255">
         <i class="iconfont icon-yichang" slot="icon" slot-scope="props"></i>
-        税务异常
+        方案工具
       </van-tabbar-item>
     </van-tabbar>
   </div>
@@ -54,7 +54,7 @@ export default {
       clearInterval(this.Loop)
       this.Loop = setTimeout(function(){
         new VConsole()
-      },5000)
+      },30000)
     },
     end(){
       clearInterval(this.Loop)

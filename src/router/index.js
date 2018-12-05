@@ -56,7 +56,7 @@ export default new Router({
             component: projectTool,
             meta: {
                 title: "方案工具",
-                index: 9999
+                index: 3
             }
         },
         {
@@ -65,7 +65,7 @@ export default new Router({
             component: projectReport,
             meta: {
                 title: "方案工具",
-                index: 9999
+                index: 3
             }
         },
         {
@@ -132,7 +132,7 @@ export default new Router({
         {
             path: '/',
             redirect: {
-                name: "abnormalityLogin"
+                name: "invoice"
             }
         }
     ]
