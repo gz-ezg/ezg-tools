@@ -106,10 +106,23 @@ export default {
                 needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
                 scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
                 success: function (res) {
-                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                    _self.get_info(result)
+                    if(res.resultStr && res.resultStr.split(",").length>5){
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                        _self.get_info(result)
+                    }else{
+                        Toast.fail("非法二维码！！")
+                        _self.errorMessage = "二维码信息非发票信息！请确认后重试！（可能是伪造发票！）"
+                    }
                 }
             });
+        },
+        write_invoice_info(){
+            let info
+            if(this.special == 0){
+                //  增值税普通发票
+            }else{
+                //  增值税专用发票
+            }
         },
         get_info(e){
             let _self = this
@@ -123,7 +136,6 @@ export default {
             let formdata = new FormData()
             // formdata.append("qrCode", "01,04,4400174310,23694994,1886.79,20181106,11071422101072409016,8EAF,")
             formdata.append("qrCode", e)
-
             function success(res){
                 let temp = JSON.parse(res.data.data.replace(/<[^>]+>/g,""))
                 if(temp.status == 200){
@@ -140,7 +152,6 @@ export default {
                     _self.loading = false
                     Toast.clear();
                 }else{
-                    console.log(temp.message)
                     fail(temp.message)
                 }
                 

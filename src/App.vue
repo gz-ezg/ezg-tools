@@ -55,6 +55,8 @@ export default {
       this.Loop = setTimeout(function(){
         new VConsole()
       },30000)
+
+      //  弹出一个窗口，输入校验码！正确弹出控制台，错误关闭！
     },
     end(){
       clearInterval(this.Loop)
