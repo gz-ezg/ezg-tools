@@ -38,7 +38,9 @@ export default new Router({
             component: nameTestTool,
             meta: {
                 title: "企业名称解析",
-                index: 9999
+                index: 9999,
+                //  百度统计校验值
+                hmId: nameTest
             }
         },
         {
