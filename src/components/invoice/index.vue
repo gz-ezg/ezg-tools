@@ -1,7 +1,7 @@
 <template>
     <div>
         <nav-bar title="发票查验" />
-        <popup v-model="dateShow" position="bottom" :overlay="false">
+        <popup v-model="dateShow" position="bottom" >
             <datetime-picker
                 v-model="currentDate"
                 type="date"
@@ -27,12 +27,13 @@
                         </radio-group>
                     </Row>
                     <cell-group>
-                        <field label="发票代码" label-align="left" v-model="info.code"></field>
-                        <field label="发票号码" label-align="left" v-model="info.number"></field>
-                        <field label="开票时间" label-align="left" v-model="info.time" readonly @click.native="dateShow=true"></field>
-                        <field label="金额(不含税)" label-align="left" v-if="special==0" v-model="info.money"></field>
-                        <field label="校验码(后六位)" label-align="left" v-else v-model="info.jiaoyan"></field>
+                        <field label="发票代码" label-align="left" v-model="info.code" required></field>
+                        <field label="发票号码" label-align="left" v-model="info.number" required></field>
+                        <field label="开票时间" label-align="left" v-model="info.time" readonly @click.native="dateShow=true" required></field>
+                        <field label="金额(不含税)" label-align="left" v-if="special==1" v-model="info.money" required></field>
+                        <field label="校验码(后六位)" label-align="left" v-else v-model="info.jiaoyan" required></field>
                     </cell-group>
+                    <Button @click="write_invoice_info" :disabled="!beforeSubmit" type="primary" size="large">查询</Button>
                 </Tab>
             </Tabs>
         </div>
@@ -44,7 +45,8 @@
                     <cell title="发票代码" :value="data.invoiceCode"></cell>
                     <cell title="发票号码" :value="data.invoiceNum"></cell>
                     <cell title="开票时间" :value="data.invoiceTime"></cell>
-                    <cell title="校验码(后六位)" :value="data.moneyOrCode"></cell>
+                    <cell title="校验码(后六位)" :value="data.moneyOrCode" v-if="special == 0"></cell>
+                    <cell title="金额" :value="data.moneyOrCode" v-if="special == 1"></cell>
                     <cell title="销方名称" :value="data.saleName"></cell>
                 </cell-group>
             </div>
@@ -54,13 +56,16 @@
         </div>
         <div style="margin:auto;width:90%;margin-top:10px">
             <p>* <span style="color:red;font-size:14px">以上结果仅供参考</span>，最终结果以税务局信息为准！</p>
+            <p style="font-size:12px;line-height:1em;text-indent:1em">1.当日开具发票最快可于<span style="color:red;font-size:12px">次日</span>进行查验。 </p>
+            <p style="font-size:12px;line-height:1em;text-indent:1em">2.每份发票每天最多可查验<span style="color:red;font-size:14px">5</span>次。</p>
+            <p style="font-size:12px;line-height:1em;text-indent:1em">3.可查验最近<span style="color:red;font-size:14px">1年内</span>增值税发票管理新系统开具的发票。</p>
         </div>
     </div>
 </template>
 
 <script>
 import common from './common.js'
-import {NavBar, Row, Col, Icon, Toast, Cell, CellGroup, Tab, Tabs, Field, RadioGroup, Radio, DatetimePicker, Popup  } from 'vant'
+import {NavBar, Row, Col, Icon, Toast, Cell, CellGroup, Tab, Tabs, Field, RadioGroup, Radio, DatetimePicker, Popup, Button  } from 'vant'
 export default {
     mixins: [common],
     components: {
@@ -77,7 +82,23 @@ export default {
         RadioGroup,
         Radio,
         DatetimePicker,
-        Popup
+        Popup,
+        Button
+    },
+    computed:{
+        beforeSubmit(){
+            if(this.info.code && this.info.number && this.info.time){
+                if(this.special == 0 && this.info.jiaoyan){
+                    return true
+                }else if(this.special == 1 && this.info.money){
+                    return true
+                }else{
+                    return false
+                }
+            }else{
+                return false
+            }
+        }
     },
     data(){
         return {
@@ -110,8 +131,9 @@ export default {
                         var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
                         _self.get_info(result)
                     }else{
-                        Toast.fail("非法二维码！！")
-                        _self.errorMessage = "二维码信息非发票信息！请确认后重试！（可能是伪造发票！）"
+                        Toast.fail("非法二维码！")
+                        _self.result = false
+                        _self.errorMessage = "二维码信息非发票信息！该发票可能无效！"
                     }
                 }
             });
@@ -120,8 +142,11 @@ export default {
             let info
             if(this.special == 0){
                 //  增值税普通发票
+                info = `01,04,${this.info.code},${this.info.number},1111.00,${this.info.time},85342965681116${this.info.jiaoyan},8EAF,`
+                this.get_info(info)
             }else{
-                //  增值税专用发票
+                info = `01,01,${this.info.code},${this.info.number},${this.info.money},${this.info.time},,9335,`
+                this.get_info(info)
             }
         },
         get_info(e){
@@ -137,39 +162,54 @@ export default {
             // formdata.append("qrCode", "01,04,4400174310,23694994,1886.79,20181106,11071422101072409016,8EAF,")
             formdata.append("qrCode", e)
             function success(res){
-                let temp = JSON.parse(res.data.data.replace(/<[^>]+>/g,""))
-                if(temp.status == 200){
-                    console.log(temp)
-                    _self.data = temp.data
-                    if(_self.data.invoiceStatus == 1){
-                        _self.data.invoiceStatus = "正常"
-                    }else if( _self.data.invoiceStatus == 3){
-                        _self.data.invoiceStatus = "无效"
+                if(res.status == 200){
+                    let temp = JSON.parse(res.data.data.replace(/<[^>]+>/g,""))
+                    if(temp.status == 200){
+                        // console.log(temp)
+                        _self.data = temp.data
+                        if(_self.data.invoiceStatus == 1){
+                            _self.data.invoiceStatus = "正常"
+                        }else if( _self.data.invoiceStatus == 3){
+                            _self.data.invoiceStatus = "无效"
+                        }else{
+                            _self.data.invoiceStatus = "无效"
+                        }
+                        _self.result = true
+                        _self.loading = false
+                        Toast.clear();
                     }else{
-                        _self.data.invoiceStatus = "无效"
+                        // fail(temp.message)
+                        _self.loading = false
+                        _self.result = false
+                        Toast.clear();
+                        _self.errorMessage = temp.message.err
                     }
-                    _self.result = true
-                    _self.loading = false
-                    Toast.clear();
                 }else{
-                    fail(temp.message)
+                    // Toast.fail("网络异常！请稍后重试！")
+                    fail()
                 }
-                
             }
 
-            function fail(err){
+            function fail(){
                 _self.loading = false
                 _self.result = false
                 Toast.clear();
-                // Toast.fail(err)
-                _self.errorMessage = err
+                _self.errorMessage = "网络异常！请稍后重试！"
+                _self.infoinfo = {
+                    code: '',
+                    number: '',
+                    time: '',
+                    money: '',
+                    jiaoyan: ''
+                }
             }
 
             this.$Post(url, formdata, success, fail)
         },
         change_date(e){
-            console.log(this.date_format(e))
+            // console.log(this.date_format(e))
             this.info.time = this.date_format(e)
+            this.dateShow = false
         },
         date_format(date){
             if(date==null||date == ''){
@@ -188,6 +228,11 @@ export default {
         }
     },
     created(){
+        // Dialog.alert({
+        //     // title: ,
+        //     message: "各位用户，非常抱歉！由于税务系统异常，暂时无法提供查询！",
+        //     closeOnClickOverlay: true
+        // })
         // this.data = JSON.parse('{"cycs":"5","invoiceCode":"4400163160","invoiceNum":"01858748","invoiceStatus":1,"invoiceTime":"2018-07-19","moneyOrCode":"27691.91","saleName":"广州******家税务局"}')
     }
 }

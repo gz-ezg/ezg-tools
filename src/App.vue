@@ -1,5 +1,6 @@
 <template>
-  <div id="app" @touchstart="start" @touchend="end">
+  <!-- <div id="app" @touchstart="start" @touchend="end"> -->
+  <div id="app">
     <router-view style="padding-bottom:80px"></router-view>
     <van-tabbar v-model="currentTab" v-if="tabShow">
       <van-tabbar-item to="/invoice">
@@ -51,15 +52,15 @@ export default {
   methods: {
     start(){
       let _self = this
-      clearInterval(this.Loop)
-      this.Loop = setTimeout(function(){
-        new VConsole()
-      },30000)
+      // clearInterval(this.Loop)
+      // this.Loop = setTimeout(function(){
+      //   new VConsole()
+      // },30000)
 
       //  弹出一个窗口，输入校验码！正确弹出控制台，错误关闭！
     },
     end(){
-      clearInterval(this.Loop)
+      // clearInterval(this.Loop)
     } 
   },
   created(){

@@ -14,7 +14,7 @@ if(process.env.NODE_ENV === 'production'){
 }else if (process.env.NODE_ENV === 'jenkins'){
     host = 'http://tools.roderickt1an.cn'
 }else{
-    host = 'http://localhost'
+    host = 'http://localhost:8080'
     // host = 'http://tools.zgcfo.com'
 }
 
@@ -79,7 +79,8 @@ if ( process.env.NODE_ENV === "production"){
     let queryMap = new Map()
 
     queryMap.set("taxAccount", "6a65d06ab5a698f143e31c1db0ddec13")
-    queryMap.set("nameTestTool", "cd8fe9f7caf9fff5c7036bdf7638f458")
+    queryMap.set("invoice", "cd8fe9f7caf9fff5c7036bdf7638f458")
+    // queryMap.set("nameTestTool", "cd8fe9f7caf9fff5c7036bdf7638f458")
     queryMap.set("nameCheckTool", "b5f4d5510d1376d002fa68fa1a6a0051")
 
     router.beforeEach((to, from, next) => {
