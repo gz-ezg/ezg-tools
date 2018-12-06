@@ -40,7 +40,7 @@ export default new Router({
                 title: "企业名称解析",
                 index: 9999,
                 //  百度统计校验值
-                hmId: nameTest
+                // hmId: "nameTestTool"
             }
         },
         {
@@ -49,7 +49,8 @@ export default new Router({
             component: nameCheckTool,
             meta: {
                 title: "企业名称测算",
-                index: 1
+                index: 1,
+                // hmId: "nameCheckTool"
             }
         },
         {
@@ -58,7 +59,8 @@ export default new Router({
             component: projectTool,
             meta: {
                 title: "方案工具",
-                index: 3
+                index: 3,
+                // hmId: "projectTool"
             }
         },
         {
@@ -67,7 +69,8 @@ export default new Router({
             component: projectReport,
             meta: {
                 title: "方案工具",
-                index: 3
+                index: 3,
+                // hmId: "projectTool"
             }
         },
         {
@@ -76,7 +79,8 @@ export default new Router({
             component: taxAccount,
             meta: {
                 title: "个税计算",
-                index: 2
+                index: 2,
+                // hmId: "taxAccount"
             }
         },
         {
@@ -89,7 +93,8 @@ export default new Router({
                     component: abnormalityLogin,
                     meta: {
                         title: "异常查询",
-                        index: 3
+                        index: 3,
+                        //  hmId: ""
                     }
                 },
                 {
@@ -98,7 +103,8 @@ export default new Router({
                     component: abnormalityError,
                     meta: {
                         title: "查询结果",
-                        index: 3
+                        index: 3,
+                        //  hmId: ""
                     }
                 },
                 {
@@ -107,7 +113,8 @@ export default new Router({
                     component: abnormalityDetail,
                     meta: {
                         title: "查询结果",
-                        index: 3
+                        index: 3,
+                        //  hmId: ""
                     }
                 },
                 {
@@ -117,7 +124,8 @@ export default new Router({
                     },
                     meta: {
                         title: "异常查询",
-                        index: 3
+                        index: 3,
+                        //  hmId: ""
                     }
                 },
             ]
@@ -128,7 +136,8 @@ export default new Router({
             component: InvoiceIndex,
             meta: {
                 title: "发票查验",
-                index: 0
+                index: 0,
+                // hmId: "invoice"
             }
         },
         {
