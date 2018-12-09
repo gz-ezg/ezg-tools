@@ -22,6 +22,17 @@ let instance = axios.create({
     baseURL: host
 })
 
+// instance.interceptors.response.use(
+//     (response) => {
+//         console.log(response)
+//         return response;
+//     },
+//     (error) => {
+//         return Promise.reject(error)
+//     }
+// )
+
+
 Vue.prototype.$http = instance
 
 Vue.config.productionTip = false
