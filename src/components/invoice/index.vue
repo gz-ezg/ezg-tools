@@ -18,14 +18,14 @@
                     <Row><center id="check">点击查验</center></Row>
                 </Tab>
                 <Tab title="手动输入">
-                    <!-- <Row style="padding:5px">
+                    <Row style="padding:5px">
                         <radio-group v-model="special">
                             <Row>
                                 <Col span="12"><radio name="0">增值税普通发票</radio></Col>
                                 <Col span="12"><radio name="1">增值税专用发票</radio></Col>
                             </Row>
                         </radio-group>
-                    </Row> -->
+                    </Row>
                     <cell-group>
                         <field label="发票代码" label-align="left" v-model="info.code" required @blur="check_invoice_type" type="number"></field>
                         <field label="发票号码" label-align="left" v-model="info.number" required></field>
@@ -326,30 +326,30 @@ export default {
         },
         //  自动校验发票类型
         check_invoice_type(){
-            let _self = this
-            if(this.info.code){
-                let str = ['04','10','11','14']
-                let temp = this.info.code.toString()
-                // str.map((x)=>{
-                //     console.log(temp.includes(x))
-                //     if(temp.includes(x)){
-                //         this.special = 1
-                //     }else{
-                //         this.special = 0
-                //     }
-                // })
+            // let _self = this
+            // if(this.info.code){
+            //     let str = ['04','10','11','14']
+            //     let temp = this.info.code.toString()
+            //     // str.map((x)=>{
+            //     //     console.log(temp.includes(x))
+            //     //     if(temp.includes(x)){
+            //     //         this.special = 1
+            //     //     }else{
+            //     //         this.special = 0
+            //     //     }
+            //     // })
 
-                for(let i = 0; i<str.length; i++){
-                    if(temp.includes(str[i])){
-                        this.special = 1
-                        return ;
-                    }else{
-                        this.special = 0
-                    }
-                }
-            }else{
-                this.special = 1
-            }
+            //     for(let i = 0; i<str.length; i++){
+            //         if(temp.includes(str[i])){
+            //             this.special = 1
+            //             return ;
+            //         }else{
+            //             this.special = 0
+            //         }
+            //     }
+            // }else{
+            //     this.special = 1
+            // }
         }
     },
     created(){
