@@ -64,6 +64,7 @@ export default {
     } 
   },
   created(){
+    // let con = new VConsole()
   }
 }
 </script>

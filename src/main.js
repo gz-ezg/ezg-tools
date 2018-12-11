@@ -14,8 +14,8 @@ if(process.env.NODE_ENV === 'production'){
 }else if (process.env.NODE_ENV === 'jenkins'){
     host = 'http://tools.roderickt1an.cn'
 }else{
-    host = 'http://localhost:8080'
-    // host = 'http://tools.zgcfo.com'
+    // host = 'http://localhost:80'
+    host = 'http://tools.zgcfo.com'
 }
 
 let instance = axios.create({

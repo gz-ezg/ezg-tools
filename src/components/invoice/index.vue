@@ -27,7 +27,7 @@
                         </radio-group>
                     </Row>
                     <cell-group>
-                        <field label="发票代码" label-align="left" v-model="info.code" required @blur="check_invoice_type" type="number"></field>
+                        <field label="发票代码" label-align="left" v-model="info.code" required></field>
                         <field label="发票号码" label-align="left" v-model="info.number" required></field>
                         <field label="开票时间" label-align="left" v-model="info.time" readonly @click.native="dateShow=true" required></field>
                         <field label="金额(不含税)" label-align="left" v-if="special==1" v-model="info.money" required></field>
@@ -45,10 +45,10 @@
                     <cell title="发票代码" :value="data.invoiceCode"></cell>
                     <cell title="发票号码" :value="data.invoiceNum"></cell>
                     <cell title="开票时间" :value="data.invoiceTime"></cell>
-                    <!-- <cell title="校验码(后六位)" :value="data.moneyOrCode" v-if="special == 0"></cell> -->
-                    <!-- <cell title="金额" :value="data.moneyOrCode" v-if="special == 1"></cell> -->
-                    <cell title="金额" :value="data.moneyOrCode"></cell>
-                    <cell title="销方名称" :value="data.saleName" id="saleName"></cell>
+                    <cell title="校验码(后六位)/金额" :value="data.moneyOrCode"></cell>
+                    <!-- <cell title="校验码(后六位)" :value="data.moneyOrCode" v-if="special == 0"></cell>
+                    <cell title="金额" :value="data.moneyOrCode" v-if="special == 1"></cell> -->
+                    <cell title="销方名称" :value="data.saleName"></cell>
                 </cell-group>
             </div>
             <div v-else>
@@ -125,6 +125,7 @@ export default {
     },
     methods: {
         scan(){
+            console.log("12345")
             let _self = this
             wx.scanQRCode({
                 needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
@@ -144,17 +145,6 @@ export default {
                     }
                 }
             });
-        },
-        write_invoice_info(){
-            let info
-            if(this.special == 0){
-                //  增值税普通发票
-                info = `01,04,${this.info.code},${this.info.number},1111.00,${this.info.time},85342965681116${this.info.jiaoyan},8EAF,`
-                this.get_info(info)
-            }else{
-                info = `01,01,${this.info.code},${this.info.number},${this.info.money},${this.info.time},,9335,`
-                this.get_info(info)
-            }
         },
         get_http_info(res){
             let _self = this
@@ -196,60 +186,18 @@ export default {
 
             this.$Get(url, config, success, fail)
         },
-        //  新版
-        get_info(e){
-            let _self = this
-            let url = `api/customer/company/invoice/queryInvoiceDetail`
-            const toast = Toast.loading({
-                duration: 0,       // 持续展示 toast
-                forbidClick: true, // 禁用背景点击
-                loadingType: 'spinner',
-                message: '加载中'
-            });
-            let formdata = new FormData()
-            // formdata.append("qrCode", "01,04,044001800111,37551641,1886.79,20181127,11071422101072409016,8EAF,")
-            formdata.append("qrCode", e)
-
-            function success(res){
-                if(res.status == 200){
-                    let temp = JSON.parse(res.data.data.replace(/<[^>]+>/g,""))
-                    console.log(temp)
-                    if(temp.message == '0'){
-                        _self.errorMessage = "此发票异常！请确认票面信息！"
-                    }else{
-                        _self.data.invoiceStatus = temp.invoice.isCancel=='N' ? "正常" : "失效"
-                        _self.data.invoiceCode = temp.invoice.invoiceCode
-                        _self.data.invoiceNum = temp.invoice.invoiceNum
-                        _self.data.invoiceTime = temp.invoice.invoiceDate
-                        _self.data.moneyOrCode = temp.invoice.totalTaxAmount
-                        _self.data.saleName = temp.invoice.salerName
-                        _self.result = true
-                        _self.loading = false
-                    }
-                }else{
-                    fail()
-                }
-                Toast.clear();
+        write_invoice_info(){
+            let info
+            if(this.special == 0){
+                //  增值税普通发票
+                info = `01,04,${this.info.code},${this.info.number},1111.00,${this.info.time},85342965681116${this.info.jiaoyan},8EAF,`
+                this.get_info(info)
+            }else{
+                info = `01,01,${this.info.code},${this.info.number},${this.info.money},${this.info.time},,9335,`
+                this.get_info(info)
             }
-
-            function fail(){
-                _self.loading = false
-                _self.result = false
-                Toast.clear();
-                _self.errorMessage = "网络异常！请稍后重试！"
-                _self.infoinfo = {
-                    code: '',
-                    number: '',
-                    time: '',
-                    money: '',
-                    jiaoyan: ''
-                }
-            }
-
-            this.$Post(url, formdata, success, fail)
         },
-        //  旧版
-        get_info1(e){
+        get_info(e){
             let _self = this
             let url = `api/customer/company/invoice/queryInvoiceInfo`
             const toast = Toast.loading({
@@ -259,13 +207,13 @@ export default {
                 message: '加载中'
             });
             let formdata = new FormData()
-            // formdata.append("qrCode", "01,04,044001800111,37551641,1886.79,20181127,11071422101072409016,8EAF,")
+            // formdata.append("qrCode", "01,04,4400174310,23694994,1886.79,20181106,11071422101072409016,8EAF,")
             formdata.append("qrCode", e)
             function success(res){
-                console.log(res)
                 if(res.status == 200){
                     let temp = JSON.parse(res.data.data.replace(/<[^>]+>/g,""))
                     if(temp.status == 200){
+                        // console.log(temp)
                         _self.data = temp.data
                         if(_self.data.invoiceStatus == 1){
                             _self.data.invoiceStatus = "正常"
@@ -278,12 +226,14 @@ export default {
                         _self.loading = false
                         Toast.clear();
                     }else{
+                        // fail(temp.message)
                         _self.loading = false
                         _self.result = false
                         Toast.clear();
                         _self.errorMessage = temp.message.err
                     }
                 }else{
+                    // Toast.fail("网络异常！请稍后重试！")
                     fail()
                 }
             }
@@ -323,33 +273,6 @@ export default {
 
             return [year, month, day].join('');
             }
-        },
-        //  自动校验发票类型
-        check_invoice_type(){
-            // let _self = this
-            // if(this.info.code){
-            //     let str = ['04','10','11','14']
-            //     let temp = this.info.code.toString()
-            //     // str.map((x)=>{
-            //     //     console.log(temp.includes(x))
-            //     //     if(temp.includes(x)){
-            //     //         this.special = 1
-            //     //     }else{
-            //     //         this.special = 0
-            //     //     }
-            //     // })
-
-            //     for(let i = 0; i<str.length; i++){
-            //         if(temp.includes(str[i])){
-            //             this.special = 1
-            //             return ;
-            //         }else{
-            //             this.special = 0
-            //         }
-            //     }
-            // }else{
-            //     this.special = 1
-            // }
         }
     },
     created(){
@@ -389,12 +312,5 @@ export default {
 }
 .van-radio__input{
     height: 1.1em;
-}
-#saleName .van-cell__value{
-    flex: 2;
-    font-size: 12px;
-}
-#saleName .van-cell__title{
-    flex: 1
 }
 </style>
