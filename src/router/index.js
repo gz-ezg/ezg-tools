@@ -93,7 +93,7 @@ export default new Router({
                     component: abnormalityLogin,
                     meta: {
                         title: "异常查询",
-                        index: 3,
+                        index: 9999,
                         //  hmId: ""
                     }
                 },
@@ -103,7 +103,7 @@ export default new Router({
                     component: abnormalityError,
                     meta: {
                         title: "查询结果",
-                        index: 3,
+                        index: 9999,
                         //  hmId: ""
                     }
                 },
@@ -113,7 +113,7 @@ export default new Router({
                     component: abnormalityDetail,
                     meta: {
                         title: "查询结果",
-                        index: 3,
+                        index: 9999,
                         //  hmId: ""
                     }
                 },
@@ -124,7 +124,7 @@ export default new Router({
                     },
                     meta: {
                         title: "异常查询",
-                        index: 3,
+                        index: 9999,
                         //  hmId: ""
                     }
                 },

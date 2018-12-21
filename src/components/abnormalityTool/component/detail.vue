@@ -22,7 +22,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(item, index) in detail.tax" :key="index">
+                            <tr v-for="(item, index) in tax.data.taxML.body.taxML.sbqkList.sbqk" :key="index">
                                 <td>{{item.gdslx}}</td>
                                 <td>{{item.zsxmmc}}</td>
                                 <td>{{item.skssqq}}</td>
@@ -48,12 +48,13 @@
             </div>
             <div v-else>
                 <center><h4>工商异常</h4></center>
+                {{business.abnormalList}}
                 <div v-if="commerce">
-                    <template v-for="(item, index ) in detail.business">
-                        <cell-group style="margin:auto;width:95%" :key="index">
-                            <cell class="labelem" :title="item.result" :url="item.url" value="详情" is-link></cell>
-                            <cell class="labelem" title="法定代表人" :value="item.name1"></cell>
-                            <cell class="labelem" title="统一社会信用代码" :value="item.taxno"></cell>
+                    <template v-for="(item, index ) in business.data.abnormalList">
+                        <cell-group style="margin:auto;width:95%" :key="index" >
+                            <cell class="labelem" title="列入经营异常名录原因" :label="item.abnormal_cause"></cell>
+                            <cell class="labelem depart" title="决定机关" :value="item.office" ></cell>
+                            <cell class="labelem" title="列入日期" :value="item.abnormal_date|formateDate"></cell>
                         </cell-group>
                     </template>
                 </div>
@@ -110,6 +111,19 @@ export default {
             detail: state => state.abnormality.detail,
             companyname: state => state.abnormality.companyname
         }),
+        business(){
+            // if(this.detail.business){
+            //     return ;
+            // }
+            console.log(JSON.parse(this.detail.business))
+            return JSON.parse(this.detail.business)
+        },
+        tax(){
+            // if(this.detail.tax){
+            //     return ;
+            // }
+            return JSON.parse(this.detail.tax)
+        }
     },
     methods: {
         // share(){
@@ -134,20 +148,34 @@ export default {
                 })
             },500)
         }
-        this.taxation = this.detail.tax.length ? true : false
-        this.commerce = this.detail.business.length ? true : false
-        this.errorNum = this.detail.tax.length + this.detail.business.length
+        this.taxation = this.tax.data.taxML.body.taxML.sbqkList.sbqk.length ? true : false
+        this.commerce = this.business.data.abnormalList.length ? true : false
+        this.errorNum = this.tax.data.taxML.body.taxML.sbqkList.sbqk.length + this.business.data.abnormalList.length
+    },
+    filters: {
+        formateDate: function (e){
+            let tempDate = new Date(e)
+            return `${tempDate.getFullYear()} 年 ${tempDate.getMonth() + 1} 月 ${tempDate.getDate()} 日`
+        }
     }
 }
 </script>
 
 <style>
 .labelem .van-cell__title{
-    font-size:12px!important;
+    font-size:14px!important;
 }
 
 .labelem .van-cell__value{
     font-size: 12px
+}
+
+.depart .van-cell__title{
+    flex:1
+}
+
+.depart .van-cell__value{
+    flex:2
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <!-- <div id="app" @touchstart="start" @touchend="end"> -->
-  <div id="app">
+  <div id="app" style="height:100%">
     <router-view style="padding-bottom:80px"></router-view>
     <van-tabbar v-model="currentTab" v-if="tabShow">
       <van-tabbar-item to="/invoice">
