@@ -85,11 +85,11 @@
                         <radio-group v-model="brotherNum">
                             <row type="flex" justify="end">
                                 <Col span="8">
-                                    <Button round size="small" @click="brotherNum = 1" :type="{ primary: brotherNum == 1, default:brotherNum != 1}">1</Button>
+                                    <Button round size="small" @click="brotherNum = 1" :type="{ primary: brotherNum == 1, default:brotherNum != 1}">0</Button>
                                     <!-- <radio name="1">1</radio> -->
                                 </Col>
                                 <Col span="8">
-                                    <Button round size="small" @click="brotherNum = 2" :type="{ primary: brotherNum == 2, default:brotherNum != 2}">2</Button>
+                                    <Button round size="small" @click="brotherNum = 2" :type="{ primary: brotherNum == 2, default:brotherNum != 2}">1</Button>
                                     <!-- <radio name="2">2</radio> -->
                                 </Col>
                                 <Col span="8"  class="not-padding">

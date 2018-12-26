@@ -1,11 +1,9 @@
 <template>
     <div style="background-color:#f64a42;height:800px;">
         <panel title="计算结果" id="panel-title">
-            <field label="应纳个税" input-align="right" readonly :value="result.taxTotal"></field>
-            <!-- <field label="应纳税所得额" input-align="right" readonly :value="result.taxTotal"></field> -->
-            <!-- <field label="税率" input-align="right"></field> -->
-            <!-- <field label="速算扣除数" input-align="right" readonly :value="result.taxTotal"></field> -->
-            <field label="税后工资" input-align="right" readonly :value="result.taxAfter"></field>
+            <field label="应付工资" input-align="right" readonly :value="(result.taxbefore - result.insurance).toFixed(0)"></field>
+            <field label="应缴个税" input-align="right" readonly :value="result.taxTotal"></field>
+            <field label="税后工资" input-align="right" readonly :value="(result.taxAfter - result.insurance).toFixed(0)"></field>
             <canvas id="mountNode" ></canvas>
             <Row style="width:90%;margin:auto;margin-top:20px">
                 <Button size="large" type="primary" @click="re_start" >重新计算</Button>
