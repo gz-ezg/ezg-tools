@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color:#f64a42;height:800px;">
+    <div style="background-color:#f64a42;">
         <panel title="计算结果" id="panel-title">
             <field label="应付工资" input-align="right" readonly :value="(result.taxbefore - result.insurance).toFixed(0)"></field>
             <field label="应缴个税" input-align="right" readonly :value="result.taxTotal"></field>
@@ -180,10 +180,11 @@ export default {
 
 <style scoped>
 #panel-title{
-    height: 380px;
+    /* height: 380px; */
     top: 15px;
     margin:15px;
     margin-top: 0px;
+    padding-bottom: 10px;
     /* border: 2px solid #cccccc; */
     border-radius: 10px;
 }

@@ -1,6 +1,6 @@
 <template>
-    <div style="background-color:#f64a42;height:1250px">
-        <panel id="panel-title">
+    <div style="background-color:#f64a42;">
+        <panel id="panel-title" v-if="isResult">
             <Row>
                 <Col span="12"><center><Button  round :type="{ danger: buttonType == 'specialty', default:buttonType == ''}" @click="buttonType= 'specialty'">专业版</Button></center></Col>
                 <Col span="12"><center><Button  round :type="{ danger: buttonType == '', default:buttonType != ''}" @click="buttonType= ''">精简版</Button></center></Col>
@@ -10,6 +10,7 @@
             <field label="五险一金" placeholder="请输入您每月实缴五险一金" input-align="right" v-model="insurance" v-if="buttonType==''"></field>
             <field label="社保基数" placeholder="请输入社保基数" input-align="right" v-model="insuranceBase" v-if="buttonType=='specialty'"></field>
             <field label="公积金基数" placeholder="请输入公积金基数" input-align="right" v-model="reserveFundBase" v-if="buttonType=='specialty'"></field>
+            <field label="公积金比例" placeholder="" input-align="right" v-model="showRatio" v-if="buttonType=='specialty'" @click.native="show=true" readonly></field>
         </panel>
         <Row v-if="isResult">
             <panel title="抵扣项" id="panel-content">
@@ -31,8 +32,8 @@
                             </row>
                         </radio-group> -->
                         <row type="flex" justify="end">
-                            <Col span="10"><Button round size="small" @click="childrenUseNum = 1" :type="{ primary: childrenUseNum == 1, default:childrenUseNum != 1}">共同使用</Button></Col>
-                            <Col span="10"><Button round size="small" @click="childrenUseNum = 2" :type="{ primary: childrenUseNum == 2, default:childrenUseNum != 2}">单独使用</Button></Col>
+                            <Col span="10"><Button round size="small" @click="childrenUseNum!=1?childrenUseNum=1:childrenUseNum=''" :type="{ primary: childrenUseNum == 1, default:childrenUseNum != 1}">共同使用</Button></Col>
+                            <Col span="10"><Button round size="small" @click="childrenUseNum!=2?childrenUseNum=2:childrenUseNum=''" :type="{ primary: childrenUseNum == 2, default:childrenUseNum != 2}">单独使用</Button></Col>
                         </row>
                         
                     </cell>
@@ -40,11 +41,11 @@
                         <radio-group v-model="childrenNum">
                             <row type="flex" justify="end">
                                 <Col span="8">
-                                    <Button round size="small" @click="childrenNum = 1" :type="{ primary: childrenNum == 1, default:childrenNum != 1}">1</Button>
+                                    <Button round size="small" @click="childrenNum!=1?childrenNum = 1:childrenNum=''" :type="{ primary: childrenNum == 1, default:childrenNum != 1}">1</Button>
                                     <!-- <radio name="1">1</radio> -->
                                 </Col>
                                 <Col span="8">
-                                    <Button round size="small" @click="childrenNum = 2" :type="{ primary: childrenNum == 2, default:childrenNum != 2}">2</Button>
+                                    <Button round size="small" @click="childrenNum!=2?childrenNum = 2:childrenNum=''" :type="{ primary: childrenNum == 2, default:childrenNum != 2}">2</Button>
                                     <!-- <radio name="2">2</radio> -->
                                 </Col>
                                 <Col span="8"  class="not-padding">
@@ -64,11 +65,11 @@
                         <radio-group v-model="adultEducation">
                             <row type="flex" justify="end">
                                 <Col span="10">
-                                    <Button round size="small" @click="adultEducation = 4800" :type="{ primary: adultEducation == 4800, default:adultEducation != 4800}">学历：4800</Button>
+                                    <Button round size="small" @click="adultEducation!=4800?adultEducation=4800:adultEducation=''" :type="{ primary: adultEducation == 4800, default:adultEducation != 4800}">学历：4800</Button>
                                     <!-- <radio name="4800">学历：4800</radio> -->
                                 </Col>
                                 <Col span="10">
-                                    <Button round size="small" @click="adultEducation = 3600" :type="{ primary: adultEducation == 3600, default:adultEducation != 3600}">技术：3600</Button>
+                                    <Button round size="small" @click="adultEducation!=3600?adultEducation=3600:adultEducation=''" :type="{ primary: adultEducation == 3600, default:adultEducation != 3600}">技术：3600</Button>
                                     <!-- <radio name="3600">技术：3600</radio> -->
                                 </Col>
                             </row>
@@ -85,11 +86,10 @@
                         <radio-group v-model="brotherNum">
                             <row type="flex" justify="end">
                                 <Col span="8">
-                                    <Button round size="small" @click="brotherNum = 1" :type="{ primary: brotherNum == 1, default:brotherNum != 1}">0</Button>
-                                    <!-- <radio name="1">1</radio> -->
+                                    <Button round size="small" @click="brotherNum!=0?brotherNum=0:brotherNum=null" :type="{ primary: brotherNum == 0, default:brotherNum != 0}">0</Button>                                    <!-- <radio name="1">1</radio> -->
                                 </Col>
                                 <Col span="8">
-                                    <Button round size="small" @click="brotherNum = 2" :type="{ primary: brotherNum == 2, default:brotherNum != 2}">1</Button>
+                                    <Button round size="small" @click="brotherNum!=1?brotherNum=1:brotherNum=null" :type="{ primary: brotherNum == 1, default:brotherNum != 1}">1</Button>
                                     <!-- <radio name="2">2</radio> -->
                                 </Col>
                                 <Col span="8"  class="not-padding">
@@ -109,7 +109,7 @@
                         <radio-group v-model="housing">
                             <row type="flex" justify="end">
                                 <Col span="8">
-                                    <Button round size="small" @click="housing = 1001" :type="{ primary: housing == 1001, default:housing != 1001}">1000/月</Button>
+                                    <Button round size="small" @click="housing!=1000?housing = 1000:housing=''" :type="{ primary: housing == 1000, default:housing != 1000}">1000/月</Button>
                                 <!-- <radio name="1001">1000/月</radio> -->
                                 </Col>
                             </row>
@@ -119,17 +119,17 @@
                         <radio-group v-model="housing">
                             <row type="flex" justify="end">
                                 <Col span="8">
-                                    <Button round size="small" @click="housing = 1200" :type="{ primary: housing == 1200, default:housing != 1200}">1200/月</Button>
+                                    <Button round size="small" @click="housing!=1500?housing = 1500:housing=''" :type="{ primary: housing == 1500, default:housing != 1500}">1500/月</Button>
 
                                     <!-- <radio name="1200">1200/月</radio> -->
                                 </Col>
                                 <Col span="8">
-                                    <Button round size="small" @click="housing = 1000" :type="{ primary: housing == 1000, default:housing != 1000}">1000/月</Button>
+                                    <Button round size="small" @click="housing!=1100?housing = 1100:housing=''" :type="{ primary: housing == 1100, default:housing != 1100}">1100/月</Button>
 
                                     <!-- <radio name="1000">1000/月</radio> -->
                                 </Col>
                                 <Col span="8">
-                                    <Button round size="small" @click="housing = 800" :type="{ primary: housing == 800, default:housing != 800}">800/月</Button>
+                                    <Button round size="small" @click="housing!=800?housing = 800:housing=''" :type="{ primary: housing == 800, default:housing != 800}">800/月</Button>
 
                                     <!-- <radio name="800">800/月</radio> -->
                                 </Col>
@@ -143,7 +143,7 @@
                             <icon name="info-o" />
                         </div>
                     </cell>
-                    <field label="医疗费用" placeholder="请输入" input-align="right" v-model="medicalExpenses"></field>
+                    <field class="medica" label="大病医疗支出" placeholder="请输入" input-align="right" v-model="medicalExpenses"></field>
                 </cell-group>
             </panel>
             <Row style="margin-top:20px;margin-left:20px">
@@ -158,11 +158,14 @@
         <Row v-else>
             <result :result="result" @cancel="rebuild"></result>
         </Row>
+        <Popup v-model="show" position="bottom">
+            <picker :columns="columns" show-toolbar @confirm="confirm_ratio" @cancel="show=false"/>
+        </Popup>
     </div>
 </template>
 
 <script>
-import { Panel, Field, Cell, CellGroup, Icon, Dialog, RadioGroup, Radio, Col, Row, Button } from 'vant';
+import { Panel, Field, Cell, CellGroup, Icon, Dialog, RadioGroup, Radio, Col, Row, Button, Picker, Popup } from 'vant';
 import result from './result'
 import common from './common.js';
 
@@ -180,7 +183,16 @@ export default {
         Col,
         Row,
         Button,
-        result
+        result,
+        Picker,
+        Popup
+    },
+    watch:{
+        brotherNum(){
+            if(this.brotherNum===''){
+                this.brotherNum = null
+            }
+        }
     },
     computed:{
         disabled(){
@@ -189,10 +201,18 @@ export default {
             }else{
                 return true
             }
+        },
+        showRatio(){
+            return (this.reserveFundRatio * 100).toFixed(0) + "%"
         }
     },
     data(){
         return {
+            show: false,
+            columns: [
+                "5%", "6%", "7%", "8%", "9%", "10%", "11%", "12%"
+            ],
+            reserveFundRatio: 0.05,
             insuranceBase: "",
             reserveFundBase: "",
             buttonType: "",
@@ -201,7 +221,7 @@ export default {
             monthIncome: "",
             childrenNum: "",
             childrenUseNum: "",
-            brotherNum: "",
+            brotherNum: null,
             housing: "",
             medicalExpenses: "",
             insurance: "",
@@ -247,9 +267,16 @@ export default {
         }
     },
     methods:{
+        confirm_ratio(e){
+            console.log(e.replace("%","") /100)
+            this.reserveFundRatio = (e.replace("%","") /100).toFixed(2)
+            this.show = false
+        },
         rebuild(){
             this.isResult=true
             this.reset()
+            document.body.scrollTop = 0
+            document.documentElement.scrollTop = 0
         },
         open_child_detail(e){
             Dialog.alert({
@@ -262,10 +289,9 @@ export default {
             let _self = this
             let url = `api/store/tools/tax/calculate`
             let temp = ""
-            if(_self.housing ==  "1001"){
-                temp = "1000"
-            }else{
-                temp = _self.housing
+            let tempBrotherNum
+            if(_self.brotherNum != null){
+                tempBrotherNum = _self.brotherNum+1
             }
 
             let config = {
@@ -288,6 +314,8 @@ export default {
                 console.log(res.data.data)
                 _self.result = res.data.data
                 _self.isResult = false
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
             }
 
             this.$Get(url, config, success)
@@ -297,7 +325,7 @@ export default {
             _self.monthIncome = ""
             _self.childrenNum = ""
             _self.childrenUseNum = ""
-            _self.brotherNum = ""
+            _self.brotherNum = null
             _self.housing = ""
             _self.medicalExpenses = ""
             _self.insurance = ""
@@ -309,12 +337,13 @@ export default {
 
 <style>
 #panel-title{
-    height: 330px;
+    /* height: 330px; */
     top: 15px;
     margin:15px;
     margin-top: 0px;
     /* border: 2px solid #cccccc; */
     border-radius: 10px;
+    padding-bottom: 10px;
 }
 #panel-title>.van-panel__header>.van-cell__title{
     text-align: center;
@@ -407,6 +436,16 @@ export default {
 .van-button__text{
     padding-left: 3px;
     padding-right: 3px;
+}
+.medica{
+    display: flex;
+}
+.medica .van-cell__title{
+    /* flex: 2; */
+    max-width: 100%;
+}
+.medica .van-cell__value{
+    /* flex: 1; */
 }
 </style>
 

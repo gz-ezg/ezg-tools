@@ -12,14 +12,14 @@ console.log(process.env.NODE_ENV)
 
 let host
 
-if(process.env.NODE_ENV === 'production'){
-    host = 'http://tools.zgcfo.com'
-}else if (process.env.NODE_ENV === 'jenkins'){
-    host = 'http://tools.roderickt1an.cn'
-}else{
-    host = 'http://localhost:8080'
-    // host = 'http://tools.zgcfo.com'
-}
+// if(process.env.NODE_ENV === 'production'){
+//     host = 'http://tools.zgcfo.com'
+// }else if (process.env.NODE_ENV === 'jenkins'){
+//     host = 'http://tools.roderickt1an.cn'
+// }else{
+//     host = 'http://localhost:8080'
+//     // host = 'http://tools.zgcfo.com'
+// }
 
 let instance = axios.create({
     baseURL: host
@@ -36,7 +36,8 @@ let instance = axios.create({
 // )
 
 
-Vue.prototype.$http = instance
+// Vue.prototype.$http = instance
+Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
 
