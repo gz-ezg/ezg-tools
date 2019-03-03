@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "jenkins": "vue-cli-service build --mode jenkins",
+    "jenkins2": "vue-cli-service build --mode jenkins",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "jest"
